@@ -1,0 +1,36 @@
+﻿@model List<Dictionary<string, object>>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cart.css" />
+}
+
+<h2 style="text-align:center; margin-top:5%;">Your Cart</h2>
+
+<div class="cart-container">
+    @foreach (var item in Model)
+    {
+        <div class="cart-item">
+            <img src="@Url.Content("~/images/" + item["ImagePath"])" alt="@item["Name"]" />
+            <div class="cart-item-details">
+                <h3>@item["Name"]</h3>
+                <p>Price: $@item["Price"]</p>
+
+                <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" style="display: flex; gap: 10px; align-items: center;">
+                    <input type="hidden" name="productId" value="@item["ProductId"]" />
+                    <input type="number" name="quantity" value="@item["Quantity"]" min="1" style="width: 60px;" />
+                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                </form>
+
+                <p>Total: $@(Convert.ToDecimal(item["Price"]) * Convert.ToInt32(item["Quantity"]))</p>
+            </div>
+            <a href="/Cart/Remove/@item["ProductId"]" class="remove-item">Remove</a>
+        </div>
+    }
+
+    <div class="total">
+        Total: $@Model.Sum(i => Convert.ToDecimal(i["Price"]) * Convert.ToInt32(i["Quantity"]))
+    </div>
+
+    <a href="/Cart/CheckLoginAndRedirect" class="btn btn-success">Proceed to Checkout</a>
+
+</div>

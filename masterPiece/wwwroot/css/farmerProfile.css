@@ -1,0 +1,37 @@
+.farmer-profile {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    text-align: center;
+}
+
+.profile-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.productLink {
+    display: block;
+    width: 130px;
+    height: 44px;
+    background-color: #4CAF50;
+    color: white;
+    line-height: 42px;
+    text-align: center;
+    text-decoration: none;
+    margin-left: 45%;
+}

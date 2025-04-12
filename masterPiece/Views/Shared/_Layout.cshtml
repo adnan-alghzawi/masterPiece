@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Feildly</title>
+    <link rel="stylesheet" href="~/css/nav.css" />
+    <link rel="stylesheet" href="~/css/footer.css" />
+    <link rel="stylesheet" href="~/css/index.css" />
+    <link rel="stylesheet" href="~/css/product_discerption.css" />
+    @RenderSection("Styles", required: false)
+</head>
+<body style="background-color:#ECF5E4;">
+    <div id="navbar">
+        @await Html.PartialAsync("_Navbar")
+    </div>
+
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+    <div id="footer">
+        @await Html.PartialAsync("_Footer")
+    </div>
+
+    <script src="~/js/nav.js"></script>
+    <script src="~/js/footer.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

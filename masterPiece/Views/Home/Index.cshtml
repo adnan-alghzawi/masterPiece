@@ -1,0 +1,115 @@
+﻿@* @{ *@
+@*     ViewData["Title"] = "Home Page"; *@
+@* } *@
+
+<section class="hero">
+    <header>
+        <h2 class="logo">Agrix S.A.</h2>
+        <div class="hamburger"></div>
+    </header>
+    @* <video src="../wwwroot/images/video.mp4" muted loop autoplay></video> *@
+    <video src="@Url.Content("~/images/video.mp4")" muted loop autoplay></video>
+
+
+    <div class="text">
+        <h2>Sustainable</h2>
+        <h3>Agriculture</h3>
+        <p>
+            Welcome to FIELDLY, where we bring the farm to your doorstep! Discover the freshest local produce,
+            connect with passionate farmers, and embrace a sustainable way of living.
+        </p>
+
+    </div>
+
+</section>
+
+<br>
+
+
+<section class="what-we-offer">
+    <h2 style="color: #EEC044;">What We Offer</h2>
+
+    <div class="offer-container">
+        <div class="offer-card">
+            <img src="./images/73812955.webp" alt="Agriculture Services" width="400" height="300">
+            <h3>Agriculture Services</h3>
+            <p>Get experienced workers for crop care and maintenance.</p>
+        </div>
+
+        <div class="offer-card">
+            <img src="./images/istockphoto-473006572-612x612.jpg" alt="Agriculture Tools" width="400" height="300">
+            <h3>Agriculture Tools</h3>
+            <p>Complete range of tools for farming, from soil preparation to harvesting.</p>
+        </div>
+
+        <div class="offer-card">
+            <img src="./images/il_570xN.4468740233_s1ut.avif" alt="Seedlings" width="400" height="300">
+            <h3>Seedlings</h3>
+            <p>High-quality seedlings for healthy crop growth.</p>
+        </div>
+
+        <div class="offer-card">
+            <img src="./images/images.jpg" alt="Seeds" width="400" height="300">
+            <h3>Seeds</h3>
+            <p>High-quality seeds for bountiful harvests.</p>
+        </div>
+    </div>
+</section>
+
+<br>
+
+<section class="what-we-offer" style="color: #EEC044;">
+    <h2>What They Say</h2>
+
+    <div class="offer-container">
+        <div class="offer-card">
+            <img src="./images/blank-profile-picture-973460_1280.webp" alt="Agriculture Products"
+                 class="circle-image">
+            <p>Excellent quality tools and seeds—made farming easier and more productive!</p>
+        </div>
+
+        <div class="offer-card">
+            <img src="./images/blank-profile-picture-973460_1280.webp" alt="Organic Products" class="circle-image">
+            <p>The best platform for finding skilled farmworkers. Highly reliable!</p>
+        </div>
+
+        <div class="offer-card">
+            <img src="./images/blank-profile-picture-973460_1280.webp" alt="Agriculture Services"
+                 class="circle-image">
+            <p>I found everything I needed for my farm in one place. Fantastic!</p>
+        </div>
+    </div>
+</section>
+
+<br>
+
+
+
+
+
+@* Scaffold-DbContext "Server=DESKTOP-KCF2RKO ;Database=localFarms ;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context MyDbContext *@
+
+@* Install-Package Microsoft.EntityFrameworkCore.SqlServer *@
+@* Install-Package Microsoft.EntityFrameworkCore.Design *@
+@* Install-Package Microsoft.EntityFrameworkCore.Tools *@
+
+
+@* 3- After that inside the same terminal run this command to link between the database that you already have been created and your project *@
+@*  - Don't forget to edit the server name and database name *@
+
+@* Scaffold-DbContext "Server=ااسم السيرفر;Database=اسم الداتابيز;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context MyDbContext *@
+
+
+@* 4- Put this code inside program.cs *@
+
+@* builder.Services.AddDbContext<MyDbContext> *@
+@*     (options => *@
+@*     options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString"))); *@
+
+
+@*     5- Put this code inside appsetting.json *@
+
+@*     "ConnectionStrings": { *@
+@*     "MyConnectionString": "Server=DESKTOP-KCF2RKO ;Database=localFarms ;Trusted_Connection=True;TrustServerCertificate=True;" *@
+@*     } *@
+

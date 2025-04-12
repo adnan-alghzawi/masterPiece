@@ -1,0 +1,41 @@
+﻿@model masterPiece.Models.Product
+
+@* @section Styles { *@
+@*     <link rel="stylesheet" href="~/css/product_discerption.css" /> *@
+@* } *@
+@section Styles {
+    <link rel="stylesheet" href="@Url.Content("~/css/product_discerption .css")" />
+}
+
+<div class="container1">
+    <div class="content">
+        <!-- Product Image -->
+        <div>
+            <img src="@Url.Content("~/images/" + (Model.ImagePath ?? "default.jpg"))" alt="@Model.Name" class="product-image">
+        </div>
+
+        <!-- Product Details -->
+        <div class="details">
+            <h2>@Model.Name</h2>
+            <p class="price">$@Model.Price</p>
+            <p class="description">@Model.Description</p>
+
+            <h4>Category:</h4>
+            <ul>
+                <li>@Model.Category</li>
+            </ul>
+
+            <!-- Buttons -->
+            <div class="btn-container">
+                @* <button class="btn add-to-cart-btn">Add to Cart</button> *@
+                @* <a href="/Cart/AddToCart/@product.Id" class="add-to-cart">Add to Cart</a> *@
+                <a href="/Cart/AddToCart/@Model.Id" class="add-to-cart">Add to Cart</a>
+                <a href="/Cart/CheckLoginAndRedirect" class="btn btn-success">Proceed to Checkout</a>
+
+
+
+                <button class="btn buy-now-btn">Buy Now</button>
+            </div>
+        </div>
+    </div>
+</div>

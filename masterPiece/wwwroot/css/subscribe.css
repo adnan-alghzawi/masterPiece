@@ -1,0 +1,77 @@
+body {
+    background-color: #ECF5E4;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 50px auto;
+    /* تأكد من وجود مساحة كافية على الأعلى والأسفل */
+    padding: 20px;
+    background-color: white;
+    /* تغيير الخلفية إلى اللون الأبيض لتعزيز التباين */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.subscription-plan {
+    background-color: #c4d7b2;
+    /* توحيد الخلفية مع لون الكرت */
+    border: 1px solid #c4d7b2;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    /* تقريب الزوايا للحصول على شكل الكرت */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* محاذاة العناصر للوسط */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    /* إضافة ظل خفيف للكروت */
+}
+
+.plan-title {
+    font-size: 24px;
+    color: #2f4f2f;
+    margin-bottom: 10px;
+    /* توفير مسافة بين العنوان والنص */
+}
+
+.plan-details {
+    font-size: 16px;
+    /* تعديل حجم الخط للتفاصيل */
+    color: #2f4f2f;
+    /* تغيير اللون لتحسين القراءة */
+    text-align: center;
+    /* محاذاة النص للوسط */
+    margin-bottom: 20px;
+    /* توفير مسافة قبل الزر */
+}
+
+.subscribe-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 50%;
+    /* تحديد عرض الزر */
+}
+
+.subscribe-button:hover {
+    background-color: #45a049;
+}
+
+.footer .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #c4d7b2;
+}

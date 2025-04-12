@@ -1,0 +1,23 @@
+﻿@model List<masterPiece.Models.Product>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/product.css" />
+}
+
+<h2 style="text-align: center; margin-top: 4.5%;">Products</h2>
+
+<section class="product_container">
+    @foreach (var product in Model)
+    {
+        <div class="product">
+            <img src="@Url.Content("~/images/" + (product.ImagePath ?? "default.jpg"))" alt="@product.Name" />
+            <h3>@product.Name</h3>
+            <p>$@product.Price</p>
+            @* <a href="#" class="add-to-cart">Add to Cart</a> *@
+            <a href="/Cart/AddToCart/@product.Id" class="add-to-cart">Add to Cart</a>
+
+            <a href="/Products/ProductDetails/@product.Id" class="add-to-cart">View Details</a>
+
+        </div>
+    }
+</section>

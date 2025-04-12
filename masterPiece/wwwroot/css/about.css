@@ -1,0 +1,188 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header Section */
+.header {
+    background: linear-gradient(135deg, #66bb6a, #43a047);
+    /* Green Gradient */
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+    position: relative;
+    background-image: url('/images/360_F_823515716_RGtAgm10pyLqa7xqvUcHuBEyHU4vghdl.jpg');
+    /* Add your desired background image URL here */
+    background-size: cover;
+    background-position: center;
+    height: 345px;
+}
+
+.header h1 {
+    font-size: 60px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 35px;
+}
+
+.header p {
+    font-size: 18px;
+    margin-top: 15px;
+    letter-spacing: 1px;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    /* Dark overlay to make text more readable */
+    z-index: -1;
+}
+
+/* About Us Section */
+.about-us {
+    background-color: #fff;
+    padding: 80px 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-top: -50px;
+    position: relative;
+    z-index: 1;
+}
+
+.about-us h2 {
+    font-size: 45px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.about-us p {
+    font-size: 18px;
+    color: #777;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+/* Image and Text Layout */
+.about-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 50px;
+}
+
+.about-section img {
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.about-section .text {
+    flex: 1;
+    text-align: left;
+}
+
+/* Reverse Layout for Second Section */
+.about-section.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Icon Section */
+.icon-section {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 60px;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.icon-card {
+    background-color: #ffffff;
+    padding: 40px;
+    width: 250px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.icon-card:hover {
+    transform: translateY(-10px);
+}
+
+.icon-card i {
+    font-size: 50px;
+    color: #43a047;
+    /* Green color for icons */
+    margin-bottom: 20px;
+}
+
+.icon-card h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.icon-card p {
+    font-size: 16px;
+    color: #777;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 40px;
+    }
+
+    .header p {
+        font-size: 16px;
+    }
+
+    .about-us h2 {
+        font-size: 35px;
+    }
+
+    .about-us p {
+        font-size: 16px;
+    }
+
+    .about-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-section img {
+        width: 80%;
+        height: auto;
+    }
+
+    .icon-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .icon-card {
+        width: 80%;
+        margin: 10px 0;
+    }
+}
