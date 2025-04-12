@@ -1,5 +1,6 @@
 ﻿using masterPiece.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace masterPiece.Controllers
 {
@@ -27,6 +28,49 @@ namespace masterPiece.Controllers
                 HttpContext.Session.SetInt32("userId", user.Id);
                 HttpContext.Session.SetString("username", user.Username);
                 HttpContext.Session.SetString("userType", user.UserType);
+
+                // دمج السلة من السيشن إلى قاعدة البيانات
+                var sessionCart = HttpContext.Session.GetString("Cart");
+                if (!string.IsNullOrEmpty(sessionCart))
+                {
+                    var cartItems = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(sessionCart);
+
+                    var cart = _context.Carts.FirstOrDefault(c => c.UserId == user.Id);
+                    if (cart == null)
+                    {
+                        cart = new Cart
+                        {
+                            UserId = user.Id
+                        };
+                        _context.Carts.Add(cart);
+                        _context.SaveChanges(); // لحفظ ID السلة الجديدة
+                    }
+
+                    foreach (var item in cartItems)
+                    {
+                        int productId = Convert.ToInt32(item["ProductId"]);
+                        int quantity = Convert.ToInt32(item["Quantity"]);
+
+                        var existingDetail = _context.CartDetails.FirstOrDefault(cd => cd.CartId == cart.Id && cd.ProductId == productId);
+                        if (existingDetail != null)
+                        {
+                            existingDetail.Quantity += quantity;
+                        }
+                        else
+                        {
+                            _context.CartDetails.Add(new CartDetail
+                            {
+                                CartId = cart.Id,
+                                ProductId = productId,
+                                Quantity = quantity
+                            });
+                        }
+                    }
+
+                    _context.SaveChanges();
+                    HttpContext.Session.Remove("Cart"); // حذف السلة من الجلسة
+                }
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -54,7 +98,7 @@ namespace masterPiece.Controllers
                 Email = email,
                 PasswordHash = password,
                 PhoneNumber = phoneNumber,
-                UserType = "User",
+                UserType = "Customer",
                 IsActive = true
             };
 

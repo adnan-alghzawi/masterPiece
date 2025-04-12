@@ -20,6 +20,7 @@ namespace masterPiece.Components
 
             if (userId != null)
             {
+                // مستخدم مسجّل دخول → نجيب السلة من الداتابيس
                 var cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
                 if (cart != null)
                 {
@@ -30,16 +31,19 @@ namespace masterPiece.Components
             }
             else
             {
-                var sessionCart = HttpContext.Session.GetString("Cart");
-                if (!string.IsNullOrEmpty(sessionCart))
+                // مستخدم غير مسجّل دخول → نقرأ من السيشن
+                var cartJson = HttpContext.Session.GetString("Cart");
+                if (!string.IsNullOrEmpty(cartJson))
                 {
-                    var items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(sessionCart);
+                    var items = Newtonsoft.Json.JsonConvert
+                        .DeserializeObject<List<Dictionary<string, object>>>(cartJson);
                     itemCount = items.Sum(item => Convert.ToInt32(item["Quantity"]));
                 }
             }
 
             return View("_CartItemCount", itemCount);
         }
+
 
     }
 }
