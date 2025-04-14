@@ -1,0 +1,66 @@
+﻿@model List<masterPiece.Models.User>
+
+@{
+    ViewData["Title"] = "Farmers";
+    var index = 0;
+}
+
+<h2 class="text-success mb-4 text-center">🌿 Farmers List</h2>
+
+<div class="row">
+    @foreach (var farmer in Model)
+    {
+        var modalId = "farmerModal" + index;
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <img src="@(!string.IsNullOrEmpty(farmer.ProfilePicture) ? farmer.ProfilePicture : "/images/default-profile.png")" 
+                     class="card-img-top"
+                     alt="Farmer Image"
+                     style="height: 250px; object-fit: cover;" />
+
+                <div class="card-body">
+                    <h5 class="card-title text-primary text-center">👨‍🌾 @farmer.Username</h5>
+
+                    <p class="card-text text-center">
+                        <strong>Status:</strong>
+                        @if (farmer.IsActive == true)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactive</span>
+                        }
+                    </p>
+
+                    <div class="d-grid">
+                        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#@modalId">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔍 Modal لعرض التفاصيل -->
+        <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="modalLabel@modalId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="modalLabel@modalId">Farmer Details - @farmer.Username</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Username:</strong> @farmer.Username</p>
+                        <p><strong>Email:</strong> @farmer.Email</p>
+                        <p><strong>Phone:</strong> @farmer.PhoneNumber</p>
+                        <p><strong>User Type:</strong> @farmer.UserType</p>
+                        <p><strong>Status:</strong> @(farmer.IsActive == true ? "Active" : "Inactive")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        index++;
+    }
+</div>

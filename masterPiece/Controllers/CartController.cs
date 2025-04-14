@@ -138,20 +138,54 @@ namespace masterPiece.Controllers
             HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart));
         }
 
+        //[HttpPost]
+        //public IActionResult UpdateQuantity(int productId, int quantity)
+        //{
+        //    var cart = GetCartFromSession();
+
+        //    var item = cart.FirstOrDefault(i => Convert.ToInt32(i["ProductId"]) == productId);
+        //    if (item != null)
+        //    {
+        //        item["Quantity"] = quantity;
+        //        SaveCartToSession(cart);
+        //    }
+
+        //    return RedirectToAction("Index");
+        //}
         [HttpPost]
         public IActionResult UpdateQuantity(int productId, int quantity)
         {
-            var cart = GetCartFromSession();
+            int? userId = HttpContext.Session.GetInt32("userId");
 
-            var item = cart.FirstOrDefault(i => Convert.ToInt32(i["ProductId"]) == productId);
-            if (item != null)
+            if (userId != null)
             {
-                item["Quantity"] = quantity;
-                SaveCartToSession(cart);
+                // المستخدم مسجل دخول ⇒ نعدّل على CartDetails في قاعدة البيانات
+                var cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
+                if (cart != null)
+                {
+                    var cartItem = _context.CartDetails.FirstOrDefault(cd => cd.CartId == cart.Id && cd.ProductId == productId);
+                    if (cartItem != null)
+                    {
+                        cartItem.Quantity = quantity;
+                        _context.SaveChanges();
+                    }
+                }
+            }
+            else
+            {
+                // غير مسجل دخول ⇒ نعدّل على session
+                var cart = GetCartFromSession();
+                var item = cart.FirstOrDefault(i => Convert.ToInt32(i["ProductId"]) == productId);
+                if (item != null)
+                {
+                    item["Quantity"] = quantity;
+                    SaveCartToSession(cart);
+                }
             }
 
             return RedirectToAction("Index");
         }
+
 
         public IActionResult CheckLoginAndRedirect()
         {
@@ -224,6 +258,44 @@ namespace masterPiece.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public IActionResult PlaceOrder(string FullName, string Address, string PhoneNumber)
+        //{
+        //    int? userId = HttpContext.Session.GetInt32("userId");
+
+        //    if (userId == null)
+        //    {
+        //        return RedirectToAction("Login", "Users");
+        //    }
+
+        //    var cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
+        //    if (cart == null)
+        //    {
+        //        TempData["Error"] = "Your cart is empty.";
+        //        return RedirectToAction("Checkout");
+        //    }
+
+        //    var cartItems = _context.CartDetails
+        //        .Where(cd => cd.CartId == cart.Id)
+        //        .ToList();
+
+        //    var order = new Order
+        //    {
+        //        UserId = userId.Value,
+        //        OrderDate = DateTime.Now,
+        //        TotalAmount = cartItems.Sum(i => i.Quantity * (i.Product?.Price ?? 0)),
+        //        Status = "Pending",
+        //        DeliveryAddress = Address
+        //    };
+
+        //    _context.Orders.Add(order);
+        //    _context.SaveChanges();
+
+        //    _context.CartDetails.RemoveRange(cartItems);
+        //    _context.SaveChanges();
+
+        //    return RedirectToAction("OrderSuccess");
+        //}
         [HttpPost]
         public IActionResult PlaceOrder(string FullName, string Address, string PhoneNumber)
         {
@@ -241,15 +313,21 @@ namespace masterPiece.Controllers
                 return RedirectToAction("Checkout");
             }
 
+            // 🔥 هنا بنجيب كل العناصر + السعر الفعلي للمنتج
             var cartItems = _context.CartDetails
+                .Include(cd => cd.Product) // ✅ مهم جدًا
                 .Where(cd => cd.CartId == cart.Id)
                 .ToList();
 
+            // نحسب التوتال الصحيح
+            decimal total = cartItems.Sum(i => i.Quantity * (i.Product?.Price ?? 0));
+
+            // نحفظ الطلب
             var order = new Order
             {
                 UserId = userId.Value,
                 OrderDate = DateTime.Now,
-                TotalAmount = cartItems.Sum(i => i.Quantity * (i.Product?.Price ?? 0)),
+                TotalAmount = total,
                 Status = "Pending",
                 DeliveryAddress = Address
             };
@@ -257,10 +335,12 @@ namespace masterPiece.Controllers
             _context.Orders.Add(order);
             _context.SaveChanges();
 
+            // حذف عناصر السلة
             _context.CartDetails.RemoveRange(cartItems);
             _context.SaveChanges();
 
             return RedirectToAction("OrderSuccess");
         }
+
     }
 }

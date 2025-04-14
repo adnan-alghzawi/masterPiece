@@ -117,5 +117,35 @@ namespace masterPiece.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
+        public IActionResult Profile()
+        {
+            int? userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+                return RedirectToAction("Login");
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            return View(user);
+        }
+        public IActionResult MyOrders()
+        {
+            int? userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+                return RedirectToAction("Login");
+
+            var orders = _context.Orders
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.OrderDate)
+                .ToList();
+
+            return View(orders);
+        }
+        public IActionResult Farmers()
+        {
+            var farmers = _context.Users
+                .Where(u => u.UserType.ToLower() == "farmer")
+                .ToList();
+
+            return View(farmers);
+        }
     }
 }

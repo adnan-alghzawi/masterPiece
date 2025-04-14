@@ -11,18 +11,26 @@
 
     <ul class="menu">
         <li><a href="/Home/Index">Home</a></li>
-        <li><a href="/about.html">About Us</a></li>
+        
+        <li><a asp-controller="Home" asp-action="About">About Us</a></li>
+
         <li><a href="/Products">Shop</a></li>
         <li><a href="/subscribe.html">Subscriptions</a></li>
-        <li><a href="/farmers.html">Farmers</a></li>
+        @* <li><a href="/farmers.html">Farmers</a></li> *@
+        <li><a asp-controller="Users" asp-action="Farmers">Farmers</a></li>
+
         <li><a href="#">Map</a></li>
-        <li><a href="/contact.html">Contact Us</a></li>
+        
+        <li><a asp-controller="Home" asp-action="Contact">Contact us</a></li>
+
 
         @if (Context.Session.GetInt32("userId") != null)
         {
             <li><a href="/Users/Profile">Profile</a></li>
             <li><a href="/Users/Logout">Logout</a></li>
         }
+       
+
         else
         {
             <li><a href="/Users/Login" class="login">Login</a></li>

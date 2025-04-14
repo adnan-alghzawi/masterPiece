@@ -21,8 +21,7 @@ public partial class Product
 
     public bool? IsActive { get; set; }
 
-    public string? ImagePath { get; set; } // صورة المنتج
-
+    public string? ImagePath { get; set; }
 
     public virtual ICollection<CartDetail> CartDetails { get; set; } = new List<CartDetail>();
 
