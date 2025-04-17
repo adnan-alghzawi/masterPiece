@@ -1,0 +1,133 @@
+﻿@{
+    ViewData["Title"] = "Subscriptions";
+}
+
+@section Styles {
+    <style>
+        .plan-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .plan-card {
+            border: 2px solid #28a745;
+            border-radius: 15px;
+            padding: 30px;
+            width: 300px;
+            text-align: center;
+            transition: 0.3s ease;
+            background-color: #f9fff9;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .plan-card:hover {
+            transform: scale(1.03);
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .plan-price {
+            font-size: 22px;
+            margin: 15px 0;
+            color: #1e5631;
+        }
+
+        .plan-details {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        .subscribe-btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .subscribe-btn:hover {
+            background-color: #1e7e34;
+        }
+
+        .alert {
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .alert-success { background-color: #d4edda; color: #155724; }
+        .alert-danger { background-color: #f8d7da; color: #721c24; }
+    </style>
+}
+
+<div class="container">
+
+    <h2 class="text-center mt-4">Choose the Right Subscription Plan</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="plan-container">
+        <!-- Monthly Plan -->
+        <div class="plan-card">
+            <div class="plan-name">Monthly Plan</div>
+            <div class="plan-price">10 JOD / Month</div>
+            <div class="plan-details">
+                - Basic agricultural tips<br />
+                - Discounts on selected items<br />
+                - Message-based support
+            </div>
+            <form method="post" asp-action="Subscribe" asp-controller="Subscription">
+                <input type="hidden" name="planName" value="Monthly" />
+                <button class="subscribe-btn" type="submit">Subscribe Now</button>
+            </form>
+        </div>
+
+        <!-- Quarterly Plan -->
+        <div class="plan-card">
+            <div class="plan-name">Quarterly Plan</div>
+            <div class="plan-price">25 JOD / 3 Months</div>
+            <div class="plan-details">
+                - All monthly features<br />
+                - Live chat support<br />
+                - Crop growth reports
+            </div>
+            <form method="post" asp-action="Subscribe" asp-controller="Subscription">
+                <input type="hidden" name="planName" value="Quarterly" />
+                <button class="subscribe-btn" type="submit">Subscribe Now</button>
+            </form>
+        </div>
+
+        <!-- Yearly Plan -->
+        <div class="plan-card">
+            <div class="plan-name">Yearly Plan</div>
+            <div class="plan-price">100 JOD / Year</div>
+            <div class="plan-details">
+                - Permanent discounts<br />
+                - Welcome gift (seeds/fertilizers)<br />
+                - Seasonal reports + full support
+            </div>
+            <form method="post" asp-action="Subscribe" asp-controller="Subscription">
+                <input type="hidden" name="planName" value="Yearly" />
+                <button class="subscribe-btn" type="submit">Subscribe Now</button>
+            </form>
+        </div>
+    </div>
+</div>

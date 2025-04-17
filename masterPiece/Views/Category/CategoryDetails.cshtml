@@ -1,0 +1,24 @@
+﻿@model List<masterPiece.Models.Product>
+
+@{
+    ViewData["Title"] = "Products by Category";
+}
+
+<h2 class="text-center mt-4">@ViewBag.CategoryName Products</h2>
+
+<div class="row mt-4 container mx-auto">
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="@Url.Content("~/images/" + (product.ImagePath ?? "default.jpg"))" class="card-img-top" alt="@product.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">@product.Description</p>
+                    <p><strong>Price:</strong> @product.Price JOD</p>
+                    <a href="/Product/Details/@product.Id" class="btn btn-success">View Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

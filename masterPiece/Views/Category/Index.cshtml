@@ -1,0 +1,18 @@
+﻿@model List<masterPiece.Models.Category>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Category.css" />
+}
+
+<h2 style="text-align: center; margin-top: 4.5%;">Categories</h2>
+
+<section class="Category_container">
+    @foreach (var Category in Model)
+    {
+        <div class="Category">
+            <h3>@Category.Name</h3>
+            <p>@Category.Description</p>
+            <a href="/Category/CategoryDetails/@Category.Id" class="add-to-cart">View products</a>
+        </div>
+    }
+</section>

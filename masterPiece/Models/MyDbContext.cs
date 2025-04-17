@@ -19,6 +19,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<CartDetail> CartDetails { get; set; }
 
+    public virtual DbSet<Category> Categories { get; set; }
+
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
@@ -72,6 +74,14 @@ public partial class MyDbContext : DbContext
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__CartDetai__Produ__45F365D3");
+        });
+
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Categori__3214EC07B4082DEF");
+
+            entity.Property(e => e.Description).HasMaxLength(255);
+            entity.Property(e => e.Name).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -144,13 +154,16 @@ public partial class MyDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Products__B40CC6ED65D54F49");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Category).HasMaxLength(50);
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.ImagePath).HasMaxLength(255);
             entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.Products)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("FK_Products_Categories");
 
             entity.HasOne(d => d.User).WithMany(p => p.Products)
                 .HasForeignKey(d => d.UserId)

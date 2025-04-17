@@ -147,5 +147,75 @@ namespace masterPiece.Controllers
 
             return View(farmers);
         }
+        public IActionResult EditProfile()
+        {
+            int? userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+                return RedirectToAction("Login");
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            return View(user);
+        }
+
+        [HttpPost]
+        public IActionResult EditProfile(User model)
+        {
+            int? userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+                return RedirectToAction("Login");
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            if (user != null)
+            {
+                user.Username = model.Username;
+                user.Email = model.Email;
+                user.PhoneNumber = model.PhoneNumber;
+
+                _context.SaveChanges();
+                TempData["Success"] = "Profile updated successfully!";
+            }
+
+            return RedirectToAction("Profile");
+        }
+
+        public IActionResult ChangePassword()
+        {
+            int? userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+                return RedirectToAction("Login");
+
+            return View(); // View بدون موديل
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(string CurrentPassword, string NewPassword, string ConfirmPassword)
+        {
+            int? userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+                return RedirectToAction("Login");
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+                return RedirectToAction("Login");
+
+            if (user.PasswordHash != CurrentPassword)
+            {
+                TempData["PasswordError"] = "Current password is incorrect.";
+                return RedirectToAction("ChangePassword");
+            }
+
+            if (NewPassword != ConfirmPassword)
+            {
+                TempData["PasswordError"] = "New passwords do not match.";
+                return RedirectToAction("ChangePassword");
+            }
+
+            user.PasswordHash = NewPassword;
+            _context.SaveChanges();
+
+            TempData["PasswordSuccess"] = "Password updated successfully!";
+            return RedirectToAction("EditProfile");
+        }
+
     }
 }
