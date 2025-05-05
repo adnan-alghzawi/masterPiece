@@ -4,79 +4,367 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/contact.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 }
 
 <section class="contact-area">
     <div class="container">
+        <!-- Floating decorative elements -->
+        <div class="floating-elements">
+            <div class="element element-1"><i class="fas fa-seedling"></i></div>
+            <div class="element element-2"><i class="fas fa-apple-alt"></i></div>
+            <div class="element element-3"><i class="fas fa-leaf"></i></div>
+        </div>
+
         <div class="row align-items-center justify-content-between">
             <div class="col-12 col-lg-5">
-                <!-- Section Heading -->
+                <!-- Animated Section Heading -->
                 <div class="section-heading">
-                    <h2>GET IN TOUCH</h2>
-                    <p>Send us a message, we will call back later</p>
+                    <h2 class="animate-heading" style="margin-left:42.5%">Get In Touch</h2>
+                    <p class="animate-subheading" style="text-align:center">We'd love to hear from you!</p>
+                    <div class="heading-decoration"></div>
                 </div>
-                <!-- Contact Form Area -->
-                <div class="contact-form-area mb-100">
+
+                <!-- Contact Info Cards -->
+                <div class="contact-info-cards">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Call Us</h4>
+                            <p>+962 79 123 4567</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Email Us</h4>
+                            <p>info@freshharvest.com</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Visit Us</h4>
+                            <p>Amman, Jordan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <!-- Contact Form -->
+                <!-- ✅ Contact Form -->
+                <div class="modern-form">
                     <form id="contactForm">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="hidden" name="_next" value="http://localhost:7083/Home/Contact">
 
                         <div class="form-group">
-                            <input type="text" name="name" placeholder="Your Name" required />
+                            <input type="text" name="name" required />
+                            <label>Your Name</label>
                         </div>
+
                         <div class="form-group">
-                            <input type="email" name="email" placeholder="Your Email" required />
+                            <input type="email" name="email" required />
+                            <label>Your Email</label>
                         </div>
+
                         <div class="form-group">
-                            <input type="text" name="subject" placeholder="Subject" required />
+                            <input type="text" name="subject" required />
+                            <label>Subject</label>
                         </div>
+
                         <div class="form-group">
-                            <textarea name="message" rows="5" placeholder="Message" required></textarea>
+                            <textarea name="message" rows="5" required></textarea>
+                            <label>Message</label>
                         </div>
-                        <button type="submit" class="btn">Send Message</button>
+
+                        <button type="submit" class="submit-btn">
+                            <span>Send Message</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
                     </form>
 
-                    <!-- ✅ Popup success message -->
-                    <div id="popup" style="display: none; background-color: #4CAF50; color: white; padding: 15px; border-radius: 5px; margin-top: 20px;">
-                        ✅ Your message was sent successfully!
+                    <!-- ✅ Stylish Popup -->
+                    <div id="popup" class="success-popup">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Your message has been sent successfully!</p>
                     </div>
-
-                    <script>
-                        document.getElementById("contactForm").addEventListener("submit", function (e) {
-                            e.preventDefault(); // ❌ إيقاف الإرسال العادي
-
-                            const form = e.target;
-                            const formData = new FormData(form);
-
-                            fetch("http://formsubmit.co/alghzawiadnan22@gmail.com", {
-                                method: "POST",
-                                body: formData
-                            })
-                            .then(response => {
-                                if (response.ok) {
-                                    document.getElementById("popup").style.display = "block";
-                                    form.reset(); // 🧹 تنظيف الحقول
-                                } else {
-                                    alert("❌ Something went wrong. Please try again.");
-                                }
-                            })
-                            .catch(error => {
-                                alert("Thank you for contacting us !");
-                            });
-                        });
-                    </script>
-
                 </div>
+
             </div>
+        </div>
 
-            <div class="col-12 col-lg-6">
-                <!-- Google Maps -->
-                <div class="map-area mb-100">
-                    <a href="https://maps.app.goo.gl/6KBoiabMTbr7AuG19">
-                        <img src="/images/location.jpeg" alt="Location Map" width="100%" height="350" />
-                    </a>
-                </div>
+        <div class="map-section">
+            <h3>Find Us on Map</h3>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3381.104625885644!2d35.930454315164!3d31.96349278128431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzHCsDU3JzQ4LjYiTiAzNcKwNTUnNDkuNiJF!5e0!3m2!1sen!2sjo!4v1620000000000!5m2!1sen!2sjo"
+                        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
     </div>
 </section>
+
+<style>
+    /* الكروت الجديدة - نسخة محسنة */
+    .contact-info-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .info-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        min-width: 0;
+    }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+
+        .info-card .info-icon {
+            width: 45px;
+            height: 45px;
+            background: #f0f9f2;
+            color: #0c7039;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .info-card .info-content h4 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .info-card .info-content p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            color: #666;
+        }
+
+    /* تحسينات النموذج */
+    .modern-form .form-group {
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+    .modern-form input,
+    .modern-form textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 15px;
+        background: #f9f9f9;
+        transition: all 0.3s;
+    }
+
+        .modern-form input:focus,
+        .modern-form textarea:focus {
+            border-color: #0c7039;
+            outline: none;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(12, 112, 57, 0.1);
+        }
+
+    .modern-form label {
+        position: absolute;
+        top: -10px;
+        left: 12px;
+        background: #fff;
+        padding: 0 5px;
+        font-size: 13px;
+        color: #555;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    /* زر الإرسال */
+    .submit-btn {
+        background: linear-gradient(to right, #0c7039, #28a745);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 30px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(12, 112, 57, 0.2);
+        width: 100%;
+        justify-content: center;
+    }
+
+        .submit-btn i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(12, 112, 57, 0.3);
+        }
+
+            .submit-btn:hover i {
+                transform: translateX(4px);
+            }
+
+    /* النافذة المنبثقة */
+    .success-popup {
+        display: none;
+        background-color: #e6faeb;
+        color: #0c7039;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(12, 112, 57, 0.1);
+        animation: fadeIn 0.4s ease-in-out forwards;
+    }
+
+        .success-popup i {
+            font-size: 30px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .success-popup p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+    /* تحسينات القسم العام */
+    .contact-area {
+        padding: 30px 0;
+    }
+
+    .section-heading {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .section-heading h2 {
+            color: #0c7039;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .section-heading p {
+            color: #666;
+            font-size: 15px;
+        }
+
+    .heading-decoration {
+        height: 3px;
+        width: 60px;
+        background: linear-gradient(to right, #0c7039, #28a745);
+        margin: 15px auto;
+        border-radius: 3px;
+    }
+
+    /* خريطة جوجل */
+    .map-section {
+        margin-top: 40px;
+    }
+
+        .map-section h3 {
+            text-align: center;
+            color: #0c7039;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+    .map-container {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    /* العناصر العائمة */
+    .floating-elements {
+        position: relative;
+        height: 0;
+    }
+
+        .floating-elements .element {
+            position: absolute;
+            color: rgba(12, 112, 57, 0.15);
+            font-size: 24px;
+            z-index: -1;
+        }
+
+    .element-1 {
+        top: -30px;
+        left: 5%;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .element-2 {
+        top: -20px;
+        right: 10%;
+        animation: float 8s ease-in-out infinite 2s;
+    }
+
+    .element-3 {
+        bottom: 50px;
+        left: 15%;
+        animation: float 7s ease-in-out infinite 1s;
+    }
+
+  
+</style>
+
+<script>
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch("https://formsubmit.co/alghzawiadnan22@gmail.com", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                const popup = document.getElementById("popup");
+                popup.style.display = "block";
+                form.reset();
+
+                // Hide after 4 seconds
+                setTimeout(() => {
+                    popup.style.display = "none";
+                }, 4000);
+            } 
+        })
+        .catch(error => {
+            alert("message sent successfuly.");
+        });
+    });
+</script>

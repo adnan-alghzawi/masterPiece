@@ -1,20 +1,20 @@
 /* Contact Section */
-.contact-area {
-    background-color: #f4f9f4;
+/*.contact-area {
+    background-color: #f4f9f4;*/
     /* Softer green-tinted background */
-    padding: 50px 20px;
+    /*padding: 50px 20px;
     font-family: 'Arial', sans-serif;
 
-}
+}*/
 
 /* Container */
-.contact-area .container {
+/*.contact-area .container {
     max-width: 1200px;
     margin: 0 auto;
-}
+}*/
 
 /* Section Heading */
-.section-heading {
+/*.section-heading {
     text-align: center;
     margin-bottom: 30px;
 }
@@ -30,10 +30,10 @@
     font-size: 18px;
     color: #555;
     margin-bottom: 20px;
-}
+}*/
 
 /* Form Styling */
-.contact-form-area {
+/*.contact-form-area {
     background-color: #fff;
     padding: 30px;
     border-radius: 15px;
@@ -54,16 +54,16 @@
 
 .contact-form-area input:focus,
 .contact-form-area textarea:focus {
-    border-color: #0c7039;
+    border-color: #0c7039;*/
     /* Focus color */
-    box-shadow: 0 0 5px rgba(12, 112, 57, 0.3);
+    /*box-shadow: 0 0 5px rgba(12, 112, 57, 0.3);
     outline: none;
 }
 
 .contact-form-area button {
-    background-color: #0c7039;
+    background-color: #0c7039;*/
     /* Primary button color */
-    color: #fff;
+    /*color: #fff;
     padding: 12px 25px;
     font-size: 16px;
     font-weight: bold;
@@ -75,23 +75,23 @@
 
 .contact-form-area button:hover {
     background-color: #084b2f;
-    transform: scale(1.05);
+    transform: scale(1.05);*/
     /* Slight hover effect */
-}
+/*}*/
 
 /* Map Area */
-.map-area iframe {
+/*.map-area iframe {
     width: 100%;
     height: 350px;
     border: none;
     border-radius: 15px;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
+}*/
 
 
 
 /* Responsive Design */
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {
     .contact-area .row {
         flex-direction: column-reverse;
         text-align: center;
@@ -110,10 +110,10 @@
     }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 425px) {*/
 
     /* Adjust section layout for smaller screens */
-    .section-heading h2 {
+    /*.section-heading h2 {
         font-size: 24px;
     }
 
@@ -140,4 +140,335 @@
     .map-area iframe {
         height: 300px;
     }
+}*/
+
+/* Base Styles */
+/*.contact-area {
+    background-color: #f9fbf8;
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+}*/
+
+/* Floating Elements */
+/*.floating-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
 }
+
+    .floating-elements .element {
+        position: absolute;
+        color: rgba(12, 112, 57, 0.1);
+        font-size: 24px;
+        animation: float 6s ease-in-out infinite;
+    }
+
+.element-1 {
+    top: 15%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.element-2 {
+    top: 65%;
+    left: 80%;
+    animation-delay: 2s;
+}
+
+.element-3 {
+    top: 30%;
+    left: 85%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}*/
+
+/* Section Heading */
+/*.section-heading {
+    margin-bottom: 40px;
+    position: relative;
+}
+
+    .section-heading h2 {
+        font-size: 36px;
+        font-weight: 700;
+        color: #0c7039;
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+    }
+
+        .section-heading h2:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: #0c7039;
+            bottom: -10px;
+            left: 0;
+        }
+
+    .section-heading p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 0;
+    }*/
+
+/* Contact Info Box */
+/*.contact-info-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+    .info-item:last-child {
+        margin-bottom: 0;
+    }
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    background: #f0f7f2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    color: #0c7039;
+    font-size: 18px;
+}
+
+.info-content h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.info-content p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 0;
+}*/
+
+/* Modern Form */
+/*.modern-form {
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.floating-label-form .form-group {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.floating-label-form input,
+.floating-label-form textarea {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    background: transparent;
+    transition: all 0.3s;
+}
+
+.floating-label-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.floating-label-form label {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    color: #999;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.3s;
+}
+
+.floating-label-form input:focus,
+.floating-label-form textarea:focus {
+    outline: none;
+    border-bottom-color: #0c7039;
+}
+
+    .floating-label-form input:focus ~ label,
+    .floating-label-form input:valid ~ label,
+    .floating-label-form textarea:focus ~ label,
+    .floating-label-form textarea:valid ~ label {
+        top: -20px;
+        font-size: 12px;
+        color: #0c7039;
+    }
+
+.floating-label-form .underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #0c7039;
+    transition: width 0.3s;
+}
+
+.floating-label-form input:focus ~ .underline,
+.floating-label-form textarea:focus ~ .underline {
+    width: 100%;
+}*/
+
+/* Submit Button */
+/*.submit-btn {
+    background: #0c7039;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(12, 112, 57, 0.3);
+}
+
+    .submit-btn i {
+        margin-left: 10px;
+        transition: all 0.3s;
+    }
+
+    .submit-btn:hover {
+        background: #084b2f;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(12, 112, 57, 0.4);
+    }
+
+        .submit-btn:hover i {
+            transform: translateX(5px);
+        }*/
+
+/* Success Message */
+/*.success-message {
+    display: none;
+    background: #f0f7f2;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+    color: #0c7039;
+}
+
+    .success-message i {
+        font-size: 40px;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .success-message p {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 0;
+    }*/
+
+/* Map Section */
+/*.map-section {
+    margin-top: 80px;
+    text-align: center;
+}
+
+    .map-section h3 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0c7039;
+        margin-bottom: 30px;
+        position: relative;
+        display: inline-block;
+    }
+
+        .map-section h3:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: #0c7039;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+.map-container {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}*/
+
+/* Responsive Design */
+/*@media (max-width: 991px) {
+    .contact-area {
+        padding: 60px 0;
+    }
+
+    .section-heading h2 {
+        font-size: 32px;
+    }
+
+    .modern-form {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .contact-area {
+        padding: 40px 0;
+    }
+
+    .section-heading h2 {
+        font-size: 28px;
+    }
+
+    .info-item {
+        flex-direction: column;
+    }
+
+    .info-icon {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .modern-form {
+        padding: 25px;
+    }
+
+    .map-section {
+        margin-top: 60px;
+    }
+}*/
