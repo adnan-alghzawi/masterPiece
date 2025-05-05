@@ -1,0 +1,61 @@
+body {
+    background: #edf1e1;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.category-title {
+    text-align: center;
+    font-size: 2.8rem;
+    font-weight: bold;
+    margin: 50px 0 30px;
+    color: #2d572c;
+}
+
+.category-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    padding: 0 50px 70px;
+}
+
+.category-card {
+    background: linear-gradient(135deg, #f0f9f0, #d3e8cf);
+    padding: 30px 20px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .category-card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .category-card h3 {
+        color: #2e7d32;
+        font-size: 1.6rem;
+        margin-bottom: 15px;
+    }
+
+    .category-card p {
+        color: #555;
+        font-size: 1rem;
+        min-height: 60px;
+    }
+
+.view-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 25px;
+    background: #4caf50;
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+    .view-btn:hover {
+        background: #388e3c;
+    }

@@ -42,24 +42,24 @@
             </div>
         </div>
 
-        <!-- 🔍 Modal لعرض التفاصيل -->
-        <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="modalLabel@modalId" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title" id="modalLabel@modalId">Farmer Details - @farmer.Username</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>Username:</strong> @farmer.Username</p>
-                        <p><strong>Email:</strong> @farmer.Email</p>
-                        <p><strong>Phone:</strong> @farmer.PhoneNumber</p>
-                        <p><strong>User Type:</strong> @farmer.UserType</p>
-                        <p><strong>Status:</strong> @(farmer.IsActive == true ? "Active" : "Inactive")</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @* <!-- 🔍 Modal لعرض التفاصيل --> *@
+        @* <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="modalLabel@modalId" aria-hidden="true"> *@
+        @*     <div class="modal-dialog modal-dialog-centered"> *@
+        @*         <div class="modal-content"> *@
+        @*             <div class="modal-header bg-success text-white"> *@
+        @*                 <h5 class="modal-title" id="modalLabel@modalId">Farmer Details - @farmer.Username</h5> *@
+        @*                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
+        @*             </div> *@
+        @*             <div class="modal-body"> *@
+        @*                 <p><strong>Username:</strong> @farmer.Username</p> *@
+        @*                 <p><strong>Email:</strong> @farmer.Email</p> *@
+        @*                 <p><strong>Phone:</strong> @farmer.PhoneNumber</p> *@
+        @*                 <p><strong>User Type:</strong> @farmer.UserType</p> *@
+        @*                 <p><strong>Status:</strong> @(farmer.IsActive == true ? "Active" : "Inactive")</p> *@
+        @*             </div> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* </div> *@
 
         index++;
     }

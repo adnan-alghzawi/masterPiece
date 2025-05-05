@@ -15,9 +15,18 @@ namespace masterPiece.Controllers
             var products = _context.Products.Where(p => p.IsActive == true).ToList();
             return View(products);
         }
-        public IActionResult ProductDetails(int id)
+        //public IActionResult ProductDetails(int id)
+        //{
+        //    var product = _context.Products.FirstOrDefault(p => p.Id == id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(product);
+        //}
+        public async Task<IActionResult> ProductDetails(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
                 return NotFound();

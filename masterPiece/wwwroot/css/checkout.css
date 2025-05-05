@@ -1,0 +1,138 @@
+:root {
+    --primary-color: #7b9c5e; /* ???? ?????? ????? ?? ?????? ??????? */
+    --secondary-color: #a8c66c;
+    --accent-color: #f1f5e8;
+    --text-color: #333;
+    --bg-color: #edf2e4;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: 'Tajawal', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.checkout-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+    .card h3 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+    }
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="month"],
+textarea {
+    width: 95%;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background-color: #fafafa;
+    transition: 0.3s ease;
+}
+
+    input:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background-color: #fff;
+    }
+
+textarea {
+    resize: vertical;
+}
+
+.summary {
+    background-color: var(--accent-color);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 25px;
+    border: 1px solid #d2e3c3;
+}
+
+    .summary p {
+        margin: 8px 0;
+        font-size: 0.95rem;
+    }
+
+.btn-container {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.checkout-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+    .checkout-btn:hover {
+        background: #5f7b47;
+    }
+
+.cart-preview {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+    .cart-preview img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin-right: 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+}

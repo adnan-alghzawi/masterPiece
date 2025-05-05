@@ -4,33 +4,91 @@
     ViewData["Title"] = "Edit Profile";
 }
 
-<div class="checkout-container" style="margin-top: 5%;">
-    <h2 style="text-align:center; color:#4CAF50;">✏️ Edit Your Profile</h2>
+@section Styles {
+    <style>
+        .profile-edit-wrapper {
+            max-width: 500px;
+            margin: 60px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
 
-    <form asp-action="EditProfile" method="post" style="max-width: 400px; margin: auto;">
-        <div class="form-group">
+            .profile-edit-wrapper h2 {
+                color: #388e3c;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+        .form-group label {
+            font-weight: 600;
+            color: #2e7d32;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .save-btn {
+            background-color: #4CAF50;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+            .save-btn:hover {
+                background-color: #388e3c;
+            }
+
+        .change-password-link {
+            display: block;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+            .change-password-link a {
+                text-decoration: none;
+                color: #f57c00;
+                font-weight: 600;
+            }
+
+                .change-password-link a:hover {
+                    color: #e65100;
+                }
+    </style>
+}
+
+<div class="profile-edit-wrapper">
+    <h2>✏️ Edit Your Profile</h2>
+
+    <form asp-action="EditProfile" method="post">
+        <div class="form-group mb-3">
             <label>Username</label>
             <input asp-for="Username" class="form-control" required />
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label>Email</label>
             <input asp-for="Email" class="form-control" required />
         </div>
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label>Phone Number</label>
             <input asp-for="PhoneNumber" class="form-control" required />
         </div>
 
-        <button type="submit" class="checkout-btn" style="margin-top: 20px;">💾 Save Changes</button>
-
-
+        <button type="submit" class="save-btn">💾 Save Changes</button>
     </form>
-    
-    <a href="/Users/ChangePassword" class="btn btn-outline-warning mt-4">
-        🔐 Change Password
-    </a>
 
-
-    
-
+    <div class="change-password-link">
+        <a href="/Users/ChangePassword">🔐 Change Password</a>
+    </div>
 </div>

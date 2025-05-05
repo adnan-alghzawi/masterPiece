@@ -1,41 +1,138 @@
 ﻿@model masterPiece.Models.Product
 
-@* @section Styles { *@
-@*     <link rel="stylesheet" href="~/css/product_discerption.css" /> *@
-@* } *@
-@section Styles {
-    <link rel="stylesheet" href="@Url.Content("~/css/product_discerption .css")" />
+@{
+    ViewData["Title"] = "Product Details";
 }
 
-<div class="container1">
-    <div class="content">
-        <!-- Product Image -->
-        <div>
-            <img src="@Url.Content("~/images/" + (Model.ImagePath ?? "default.jpg"))" alt="@Model.Name" class="product-image">
-        </div>
+<div class="product-details-container">
+    <div class="product-image">
+        <img src="@Url.Content("~/images/" + (Model.ImagePath ?? "default.jpg"))" alt="@Model.Name" />
+    </div>
+    <div class="product-info">
+        <h2>@Model.Name</h2>
+        <p class="description">@Model.Description</p>
+        <p class="price">Price: <strong>@Model.Price JOD</strong></p>
 
-        <!-- Product Details -->
-        <div class="details">
-            <h2>@Model.Name</h2>
-            <p class="price">$@Model.Price</p>
-            <p class="description">@Model.Description</p>
+        <!-- زر Add to Cart -->
+        <a href="#" onclick="addToCart(@Model.Id)" class="add-cart-btn">Add to Cart</a>
 
-            <h4>Category:</h4>
-            <ul>
-                <li>@Model.Category</li>
-            </ul>
-
-            <!-- Buttons -->
-            <div class="btn-container">
-                @* <button class="btn add-to-cart-btn">Add to Cart</button> *@
-                @* <a href="/Cart/AddToCart/@product.Id" class="add-to-cart">Add to Cart</a> *@
-                <a href="/Cart/AddToCart/@Model.Id" class="add-to-cart">Add to Cart</a>
-                <a href="/Cart/CheckLoginAndRedirect" class="btn btn-success">Proceed to Checkout</a>
-
-
-
-                <button class="btn buy-now-btn">Buy Now</button>
-            </div>
-        </div>
+        <a href="/Category" class="back-link">← Back to Shop</a>
     </div>
 </div>
+
+<!-- ✅ نافذة منبثقة لتأكيد الإضافة -->
+<div id="success-popup" class="popup">
+    <div class="popup-content">
+        <p>✅ Product added to cart!</p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function addToCart(productId) {
+            fetch(`/Cart/AddToCart/${productId}`)
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById("success-popup").style.display = "block";
+                        setTimeout(() => {
+                            document.getElementById("success-popup").style.display = "none";
+                        }, 2000);
+                    } else {
+                        alert("Something went wrong.");
+                    }
+                });
+        }
+    </script>
+}
+
+@section Styles {
+    <style>
+        .product-details-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 60px auto;
+            max-width: 1100px;
+            padding: 20px;
+            background: #f9fff6;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            flex: 1 1 400px;
+            padding: 20px;
+        }
+
+            .product-image img {
+                width: 100%;
+                height: auto;
+                border-radius: 12px;
+            }
+
+        .product-info {
+            flex: 1 1 500px;
+            padding: 20px;
+        }
+
+            .product-info h2 {
+                font-size: 2.2rem;
+                color: #2d572c;
+                margin-bottom: 15px;
+            }
+
+        .description {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+
+        .add-cart-btn {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+            .add-cart-btn:hover {
+                background-color: #388e3c;
+            }
+
+        .back-link {
+            color: #388e3c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+            .back-link:hover {
+                text-decoration: underline;
+            }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4caf50;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            z-index: 9999;
+        }
+    </style>
+}

@@ -57,3 +57,50 @@ h1 {
     margin: 0 auto;
     background-color: #c4d7b2;
 }
+.farmer-card {
+    background: #f9fff9;
+    border-radius: 16px;
+    border: 1px solid #dbe8d0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .farmer-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 128, 0, 0.15);
+    }
+
+    .farmer-card .card-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .farmer-card .btn {
+        border-radius: 20px;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+        .farmer-card .btn:hover {
+            background-color: #7ca96d;
+            color: white;
+            border-color: #7ca96d;
+        }
+
+ Modal Design 
+.modal-content {
+    border-radius: 16px;
+    border: 1px solid #c9d8b6;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    background-color: #7ba96d;
+    color: white;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.modal-body p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}

@@ -4,21 +4,25 @@
     ViewData["Title"] = "Products by Category";
 }
 
-<h2 class="text-center mt-4">@ViewBag.CategoryName Products</h2>
+<h2 class="category-title">@ViewBag.CategoryName Products</h2>
 
-<div class="row mt-4 container mx-auto">
+<div class="row product-grid container mx-auto">
     @foreach (var product in Model)
     {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="@Url.Content("~/images/" + (product.ImagePath ?? "default.jpg"))" class="card-img-top" alt="@product.Name">
-                <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">@product.Description</p>
-                    <p><strong>Price:</strong> @product.Price JOD</p>
-                    <a href="/Product/Details/@product.Id" class="btn btn-success">View Details</a>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="product-card h-100">
+                <img src="@Url.Content("~/images/" + (product.ImagePath ?? "default.jpg"))" class="product-img" alt="@product.Name">
+                <div class="product-info">
+                    <h5 class="product-title">@product.Name</h5>
+                    <p class="product-desc">@product.Description</p>
+                    <p class="product-price">@product.Price JOD</p>
+                    <a href="/Products/ProductDetails/@product.Id" class="view-btn">View Details</a>
                 </div>
             </div>
         </div>
     }
 </div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/ProductByCategory.css" />
+}
