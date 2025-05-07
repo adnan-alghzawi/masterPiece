@@ -1,0 +1,773 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jordan Tree Nurseries Map</title>
+
+    <!-- Leaflet Maps Styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 800px;
+            justify-content: space-between;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        #destination-input {
+            flex-grow: 1;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            margin-right: 10px;
+            transition: border 0.3s;
+        }
+
+            #destination-input:focus {
+                border-color: #4CAF50;
+            }
+
+        .control-button {
+            padding: 8px 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 5px;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+            .control-button:hover {
+                background: #45a049;
+            }
+
+        #stop-navigation {
+            background: #f44336;
+        }
+
+            #stop-navigation:hover {
+                background: #d32f2f;
+            }
+
+        #locate-me {
+            background: #2196F3;
+        }
+
+            #locate-me:hover {
+                background: #0b7dda;
+            }
+
+        #next-instruction {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            display: none;
+            width: 80%;
+            max-width: 600px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #suggestions {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 0;
+            border-radius: 8px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 800px;
+            z-index: 1000;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .suggestion-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+            .suggestion-item:hover {
+                background: #f5f5f5;
+            }
+
+            .suggestion-item:last-child {
+                border-bottom: none;
+            }
+
+        .nursery-popup {
+            text-align: center;
+            min-width: 250px;
+        }
+
+            .nursery-popup h3 {
+                margin: 0 0 10px 0;
+                color: #2E7D32;
+            }
+
+            .nursery-popup p {
+                margin: 5px 0;
+                font-size: 14px;
+            }
+
+            .nursery-popup button {
+                padding: 8px 15px;
+                margin: 5px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 13px;
+                transition: all 0.2s;
+            }
+
+                .nursery-popup button.navigate {
+                    background: #4CAF50;
+                    color: white;
+                }
+
+                    .nursery-popup button.navigate:hover {
+                        background: #3e8e41;
+                    }
+
+                .nursery-popup button.details {
+                    background: #2196F3;
+                    color: white;
+                }
+
+                    .nursery-popup button.details:hover {
+                        background: #0b7dda;
+                    }
+
+        #filter-panel {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            width: 200px;
+        }
+
+            #filter-panel h3 {
+                margin-top: 0;
+                color: #2E7D32;
+                font-size: 16px;
+            }
+
+        .filter-checkbox {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+
+            .filter-checkbox input {
+                margin-right: 8px;
+            }
+
+        .governorate-count {
+            font-size: 12px;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .leaflet-routing-container {
+            display: none !important;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="controls">
+        <input type="text" id="destination-input" placeholder="Search for a nursery or location...">
+        <button id="start-navigation" class="control-button">🚗 Start</button>
+        <button id="stop-navigation" class="control-button">🛑 Stop</button>
+        <button id="locate-me" class="control-button">📍 My Location</button>
+        <button id="toggle-language" class="control-button">🔊 English</button>
+    </div>
+
+    <div id="filter-panel">
+        <h3>Filter by Governorate</h3>
+        <div class="filter-checkbox">
+            <input type="checkbox" id="amman-filter" checked>
+            <label for="amman-filter">Amman</label>
+            <span class="governorate-count" id="amman-count">0</span>
+        </div>
+        <div class="filter-checkbox">
+            <input type="checkbox" id="irbid-filter" checked>
+            <label for="irbid-filter">Irbid</label>
+            <span class="governorate-count" id="irbid-count">0</span>
+        </div>
+        <div class="filter-checkbox">
+            <input type="checkbox" id="zarqa-filter" checked>
+            <label for="zarqa-filter">Zarqa</label>
+            <span class="governorate-count" id="zarqa-count">0</span>
+        </div>
+        <div class="filter-checkbox">
+            <input type="checkbox" id="balqa-filter" checked>
+            <label for="balqa-filter">Balqa</label>
+            <span class="governorate-count" id="balqa-count">0</span>
+        </div>
+        <div class="filter-checkbox">
+            <input type="checkbox" id="madaba-filter" checked>
+            <label for="madaba-filter">Madaba</label>
+            <span class="governorate-count" id="madaba-count">0</span>
+        </div>
+    </div>
+
+    <div id="suggestions"></div>
+    <div id="map"></div>
+    <div id="next-instruction">Next direction will appear here...</div>
+
+    <script>
+        // Initialize the map centered on Jordan
+        let map = L.map('map').setView([31.963158, 35.930359], 8);
+        let userMarker, userLocation, routingControl;
+        let speechSynthesis = window.speechSynthesis;
+        let voiceLanguage = "en-US";
+        let nextInstruction = document.getElementById("next-instruction");
+        let suggestionsDiv = document.getElementById("suggestions");
+        let nurseryMarkers = [];
+        let currentFilter = {
+            amman: true,
+            irbid: true,
+            zarqa: true,
+            balqa: true,
+            madaba: true
+        };
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Tree nurseries data for Jordan
+        let nurseries = [
+            {
+                name: "Green Land Nursery - Amman",
+                lat: 31.9496,
+                lng: 35.8934,
+                governorate: "amman",
+                types: ["Fruit Trees", "Ornamental"],
+                contact: "06 534 5678",
+                hours: "8:00 AM - 6:00 PM",
+                rating: "4.5",
+                distance: "5 km",
+                time: "10 mins"
+            },
+            {
+                name: "Al-Rawabi Nursery - Irbid",
+                lat: 32.5353,
+                lng: 35.8516,
+                governorate: "irbid",
+                types: ["Forest Trees", "Medicinal Plants"],
+                contact: "02 724 8910",
+                hours: "7:00 AM - 5:00 PM",
+                rating: "4.2",
+                distance: "80 km",
+                time: "1 hour"
+            },
+            {
+                name: "Zarqa Garden Center",
+                lat: 32.0833,
+                lng: 36.1000,
+                governorate: "zarqa",
+                types: ["Ornamental", "Landscaping"],
+                contact: "05 382 4567",
+                hours: "8:30 AM - 7:00 PM",
+                rating: "4.0",
+                distance: "25 km",
+                time: "30 mins"
+            },
+            {
+                name: "Balqa Tree Farm",
+                lat: 32.0367,
+                lng: 35.7272,
+                governorate: "balqa",
+                types: ["Forest Trees", "Fruit Trees"],
+                contact: "05 353 1234",
+                hours: "7:30 AM - 4:30 PM",
+                rating: "4.3",
+                distance: "35 km",
+                time: "40 mins"
+            },
+            {
+                name: "Madaba Plant Nursery",
+                lat: 31.7167,
+                lng: 35.8000,
+                governorate: "madaba",
+                types: ["Ornamental", "Medicinal Plants"],
+                contact: "05 324 7890",
+                hours: "8:00 AM - 6:00 PM",
+                rating: "4.1",
+                distance: "30 km",
+                time: "35 mins"
+            },
+            {
+                name: "Amman Botanical Gardens",
+                lat: 31.9784,
+                lng: 35.8554,
+                governorate: "amman",
+                types: ["Rare Species", "Educational"],
+                contact: "06 541 2345",
+                hours: "9:00 AM - 5:00 PM",
+                rating: "4.7",
+                distance: "12 km",
+                time: "20 mins"
+            },
+            {
+                name: "Northern Trees - Irbid",
+                lat: 32.5451,
+                lng: 35.8577,
+                governorate: "irbid",
+                types: ["Fruit Trees", "Forest Trees"],
+                contact: "02 735 6789",
+                hours: "7:00 AM - 5:00 PM",
+                rating: "4.4",
+                distance: "85 km",
+                time: "1 hour 10 mins"
+            },
+            {
+                name: "Zarqa Urban Greenery",
+                lat: 32.0667,
+                lng: 36.0833,
+                governorate: "zarqa",
+                types: ["Urban Plants", "Drought Resistant"],
+                contact: "05 389 0123",
+                hours: "8:00 AM - 6:00 PM",
+                rating: "3.9",
+                distance: "27 km",
+                time: "32 mins"
+            },
+            {
+                name: "Salt Valley Nursery",
+                lat: 32.0392,
+                lng: 35.7272,
+                governorate: "balqa",
+                types: ["Native Species", "Fruit Trees"],
+                contact: "05 354 5678",
+                hours: "7:00 AM - 4:00 PM",
+                rating: "4.6",
+                distance: "36 km",
+                time: "42 mins"
+            },
+            {
+                name: "Madaba Organic Farm",
+                lat: 31.7000,
+                lng: 35.7833,
+                governorate: "madaba",
+                types: ["Organic Plants", "Herbs"],
+                contact: "05 327 3456",
+                hours: "8:30 AM - 5:30 PM",
+                rating: "4.8",
+                distance: "32 km",
+                time: "38 mins"
+            }
+        ];
+
+        // Function to add nursery markers to the map
+        function addNurseryMarkers() {
+            // Clear existing markers
+            nurseryMarkers.forEach(marker => map.removeLayer(marker));
+            nurseryMarkers = [];
+
+            // Update governorate counts
+            updateGovernorateCounts();
+
+            // Add filtered markers
+            nurseries.forEach(nursery => {
+                if (currentFilter[nursery.governorate]) {
+                    let marker = L.marker([nursery.lat, nursery.lng], {
+                        icon: L.icon({
+                            iconUrl: 'https://cdn-icons-png.flaticon.com/512/3021/3021643.png',
+                            iconSize: [32, 32],
+                            className: 'nursery-marker'
+                        })
+                    }).addTo(map);
+
+                    // Display nursery name above the marker
+                    marker.bindTooltip(nursery.name, {
+                        permanent: false,
+                        direction: 'top',
+                        className: 'nursery-tooltip'
+                    });
+
+                    // Show nursery details on click
+                    marker.bindPopup(`
+                        <div class="nursery-popup">
+                            <h3>${nursery.name}</h3>
+                            <p><strong>Types:</strong> ${nursery.types.join(", ")}</p>
+                            <p><strong>Governorate:</strong> ${nursery.governorate.charAt(0).toUpperCase() + nursery.governorate.slice(1)}</p>
+                            <p><strong>Contact:</strong> ${nursery.contact}</p>
+                            <p><strong>Hours:</strong> ${nursery.hours}</p>
+                            <p><strong>Rating:</strong> ${nursery.rating} ★</p>
+                            <p><strong>Distance:</strong> ${nursery.distance}</p>
+                            <p><strong>Estimated Time:</strong> ${nursery.time}</p>
+                            <button class="navigate" onclick="navigateToNursery(${nursery.lat}, ${nursery.lng}, '${nursery.name}')">🚗 Navigate</button>
+                            <button class="details" onclick="showNurseryDetails('${nursery.name}')">ℹ️ More Info</button>
+                        </div>
+                    `);
+
+                    nurseryMarkers.push(marker);
+                }
+            });
+        }
+
+        // Update governorate counts in the filter panel
+        function updateGovernorateCounts() {
+            const counts = {
+                amman: 0,
+                irbid: 0,
+                zarqa: 0,
+                balqa: 0,
+                madaba: 0
+            };
+
+            nurseries.forEach(nursery => {
+                counts[nursery.governorate]++;
+            });
+
+            document.getElementById('amman-count').textContent = counts.amman;
+            document.getElementById('irbid-count').textContent = counts.irbid;
+            document.getElementById('zarqa-count').textContent = counts.zarqa;
+            document.getElementById('balqa-count').textContent = counts.balqa;
+            document.getElementById('madaba-count').textContent = counts.madaba;
+        }
+
+        // Initialize filter checkboxes
+        document.querySelectorAll('#filter-panel input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const governorate = this.id.replace('-filter', '');
+                currentFilter[governorate] = this.checked;
+                addNurseryMarkers();
+            });
+        });
+
+        // Add initial nursery markers
+        addNurseryMarkers();
+
+        // Track user location continuously
+        function trackUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(
+                    (position) => {
+                        userLocation = [position.coords.latitude, position.coords.longitude];
+                        let heading = position.coords.heading; // Get the user's heading (direction)
+
+                        if (!userMarker) {
+                            userMarker = L.marker(userLocation, {
+                                icon: L.icon({
+                                    iconUrl: 'https://cdn-icons-png.flaticon.com/512/167/167734.png',
+                                    iconSize: [30, 30],
+                                    className: 'user-marker',
+                                    iconAnchor: [15, 15],
+                                    popupAnchor: [0, -15]
+                                })
+                            }).addTo(map)
+                                .bindPopup("📍 Your Location").openPopup();
+                        } else {
+                            userMarker.setLatLng(userLocation);
+                        }
+
+                        // Update the marker's rotation based on heading
+                        if (heading) {
+                            userMarker.setIcon(L.icon({
+                                iconUrl: 'https://cdn-icons-png.flaticon.com/512/167/167734.png',
+                                iconSize: [30, 30],
+                                className: 'user-marker',
+                                iconAnchor: [15, 15],
+                                popupAnchor: [0, -15],
+                                rotationAngle: heading
+                            }));
+                        }
+
+                        if (!routingControl) {
+                            map.setView(userLocation, 15);
+                        }
+                    },
+                    (error) => {
+                        console.error("Error getting location:", error);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        maximumAge: 0,
+                        timeout: 5000
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Start tracking user location when the page loads
+        trackUserLocation();
+
+        // Speak a text using Web Speech API
+        function speak(text) {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = voiceLanguage;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Navigate to a nursery
+        function navigateToNursery(lat, lng, name) {
+            if (!userLocation) {
+                alert("⚠️ Please enable location services first.");
+                return;
+            }
+
+            // Close any open popups
+            map.closePopup();
+
+            if (routingControl) {
+                map.removeControl(routingControl);
+            }
+
+            speak(`Navigating to ${name}`);
+
+            routingControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(userLocation[0], userLocation[1]),
+                    L.latLng(lat, lng)
+                ],
+                routeWhileDragging: false,
+                lineOptions: { styles: [{ color: '#4CAF50', weight: 6 }] },
+                show: false,
+                addWaypoints: false
+            }).addTo(map);
+
+            let spoken300m = false;
+            let spoken50m = false;
+
+            routingControl.on('routesfound', function(e) {
+                let routes = e.routes;
+                let route = routes[0];
+                let instructions = route.instructions;
+
+                let currentStep = 0;
+                let intervalId = setInterval(() => {
+                    if (currentStep < instructions.length) {
+                        let instruction = instructions[currentStep];
+                        let distanceToNext = instruction.distance;
+
+                        // Speak before 300 meters
+                        if (distanceToNext <= 300 && !spoken300m) {
+                            let instructionText = instruction.text.replace(/Continue/g, "Continue for 300 meters");
+                            speak(instructionText);
+                            spoken300m = true;
+                        }
+
+                        // Speak before 50 meters
+                        if (distanceToNext <= 50 && !spoken50m) {
+                            let instructionText = instruction.text.replace(/Continue/g, "Continue for 50 meters");
+                            speak(instructionText);
+                            spoken50m = true;
+                        }
+
+                        // Update the displayed instruction
+                        nextInstruction.innerText = instruction.text;
+                        nextInstruction.style.display = "block";
+
+                        // Move to the next step if the distance is less than 10 meters
+                        if (distanceToNext < 10) {
+                            currentStep++;
+                            spoken300m = false;
+                            spoken50m = false;
+                        }
+                    } else {
+                        clearInterval(intervalId);
+                        nextInstruction.style.display = "none";
+                        speak(`You have arrived at ${name}`);
+                    }
+                }, 1000);
+            });
+        }
+
+        // Show nursery details
+        function showNurseryDetails(name) {
+            let nursery = nurseries.find(n => n.name === name);
+            if (nursery) {
+                let details = `
+                    <h3>${nursery.name}</h3>
+                    <p><strong>Location:</strong> ${nursery.governorate.charAt(0).toUpperCase() + nursery.governorate.slice(1)} Governorate</p>
+                    <p><strong>Plant Types:</strong> ${nursery.types.join(", ")}</p>
+                    <p><strong>Contact:</strong> ${nursery.contact}</p>
+                    <p><strong>Operating Hours:</strong> ${nursery.hours}</p>
+                    <p><strong>Customer Rating:</strong> ${nursery.rating} stars</p>
+                `;
+
+                // Create a custom popup instead of using alert
+                L.popup()
+                    .setLatLng([nursery.lat, nursery.lng])
+                    .setContent(details)
+                    .openOn(map);
+            }
+        }
+
+        // Toggle language
+        document.getElementById("toggle-language").addEventListener("click", function() {
+            voiceLanguage = voiceLanguage === "en-US" ? "ar-SA" : "en-US";
+            this.innerText = voiceLanguage === "en-US" ? "🔊 English" : "🔊 Arabic";
+            speak(voiceLanguage === "en-US" ? "Language switched to English" : "تم تغيير اللغة إلى العربية");
+        });
+
+        // Stop navigation
+        document.getElementById("stop-navigation").addEventListener("click", function() {
+            if (routingControl) {
+                map.removeControl(routingControl);
+                routingControl = null;
+                nextInstruction.style.display = "none";
+                speechSynthesis.cancel();
+                speak("Navigation stopped");
+            }
+        });
+
+        // Locate me button
+        document.getElementById("locate-me").addEventListener("click", function() {
+            if (userLocation) {
+                map.setView(userLocation, 15);
+                speak("Centering on your current location");
+            } else {
+                speak("Please enable location services");
+            }
+        });
+
+        // Start navigation button
+        document.getElementById("start-navigation").addEventListener("click", function() {
+            let destination = document.getElementById("destination-input").value;
+            if (destination) {
+                // Find the nursery with this name
+                let nursery = nurseries.find(n => n.name.includes(destination));
+                if (nursery) {
+                    navigateToNursery(nursery.lat, nursery.lng, nursery.name);
+                } else {
+                    // Fallback to generic search
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${destination}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.length > 0) {
+                                let item = data[0];
+                                navigateToNursery(item.lat, item.lon, item.display_name);
+                            } else {
+                                speak("Destination not found");
+                            }
+                        });
+                }
+            } else {
+                speak("Please enter a destination first");
+            }
+        });
+
+        // Search for destinations
+        document.getElementById("destination-input").addEventListener("input", function() {
+            let query = this.value.toLowerCase();
+            if (query.length > 2) {
+                // Filter nurseries by name
+                let filteredNurseries = nurseries.filter(nursery =>
+                    nursery.name.toLowerCase().includes(query)
+                );
+
+                // Also include OSM results for general locations
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        suggestionsDiv.innerHTML = "";
+
+                        // Add nursery suggestions first
+                        filteredNurseries.forEach(nursery => {
+                            let suggestion = document.createElement("div");
+                            suggestion.className = "suggestion-item";
+                            suggestion.innerHTML = `
+                                <strong>${nursery.name}</strong><br>
+                                <small>${nursery.governorate.charAt(0).toUpperCase() + nursery.governorate.slice(1)} Governorate • ${nursery.types.join(", ")}</small>
+                            `;
+                            suggestion.addEventListener("click", () => {
+                                document.getElementById("destination-input").value = nursery.name;
+                                suggestionsDiv.style.display = "none";
+                                navigateToNursery(nursery.lat, nursery.lng, nursery.name);
+                            });
+                            suggestionsDiv.appendChild(suggestion);
+                        });
+
+                        // Add OSM results
+                        data.forEach(item => {
+                            let suggestion = document.createElement("div");
+                            suggestion.className = "suggestion-item";
+                            suggestion.innerHTML = `<strong>${item.display_name}</strong>`;
+                            suggestion.addEventListener("click", () => {
+                                document.getElementById("destination-input").value = item.display_name;
+                                suggestionsDiv.style.display = "none";
+                                navigateToNursery(item.lat, item.lon, item.display_name);
+                            });
+                            suggestionsDiv.appendChild(suggestion);
+                        });
+
+                        if (filteredNurseries.length > 0 || data.length > 0) {
+                            suggestionsDiv.style.display = "block";
+                        } else {
+                            suggestionsDiv.style.display = "none";
+                        }
+                    });
+            } else {
+                suggestionsDiv.style.display = "none";
+            }
+        });
+
+        // Close suggestions when clicking elsewhere
+        map.on('click', function() {
+            suggestionsDiv.style.display = "none";
+        });
+    </script>
+</body>
+</html>

@@ -1,7 +1,26 @@
 ﻿@* @{ *@
 @*     ViewData["Title"] = "Home Page"; *@
 @* } *@
+<style>
+    section.hero {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        padding: 0;
+        margin: 0;
+    }
 
+        section.hero video {
+            position: absolute;
+            top: -45px;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 1;
+        }
+</style>
 <section class="hero">
     <header>
         <h2 class="logo">Agrix S.A.</h2>
