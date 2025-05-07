@@ -20,7 +20,7 @@
             <div class="col-12 col-lg-5">
                 <!-- Animated Section Heading -->
                 <div class="section-heading">
-                    <h2 class="animate-heading" style="margin-left:42.5%">Get In Touch</h2>
+                    <h2 class="animate-heading" >Get In Touch</h2>
                     <p class="animate-subheading" style="text-align:center">We'd love to hear from you!</p>
                     <div class="heading-decoration"></div>
                 </div>
@@ -33,7 +33,7 @@
                         </div>
                         <div class="info-content">
                             <h4>Call Us</h4>
-                            <p>+962 79 123 4567</p>
+                            <p>+962 79 800 9496</p>
                         </div>
                     </div>
 
@@ -43,7 +43,7 @@
                         </div>
                         <div class="info-content">
                             <h4>Email Us</h4>
-                            <p>info@freshharvest.com</p>
+                            <p>alghzawiadnan22@gmail.com</p>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                         </div>
                         <div class="info-content">
                             <h4>Visit Us</h4>
-                            <p>Amman, Jordan</p>
+                            <p>Irbid, Jordan</p>
                         </div>
                     </div>
                 </div>
@@ -117,9 +117,11 @@
     /* الكروت الجديدة - نسخة محسنة */
     .contact-info-cards {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         gap: 15px;
         margin-top: 30px;
+        align-content: center;
+        justify-content: space-evenly;
     }
 
     .info-card {
@@ -165,74 +167,100 @@
             color: #666;
         }
 
-    /* تحسينات النموذج */
-    .modern-form .form-group {
-        position: relative;
-        margin-bottom: 25px;
+    /* تحسين عام للنموذج */
+    .modern-form {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
     }
 
-    .modern-form input,
-    .modern-form textarea {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        font-size: 15px;
-        background: #f9f9f9;
-        transition: all 0.3s;
-    }
-
-        .modern-form input:focus,
-        .modern-form textarea:focus {
-            border-color: #0c7039;
-            outline: none;
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(12, 112, 57, 0.1);
+        /* كل حقل */
+        .modern-form .form-group {
+            position: relative;
+            margin-bottom: 30px;
         }
 
-    .modern-form label {
-        position: absolute;
-        top: -10px;
-        left: 12px;
-        background: #fff;
-        padding: 0 5px;
-        font-size: 13px;
-        color: #555;
-        pointer-events: none;
-        transition: all 0.3s ease;
-    }
+        /* الحقول */
+        .modern-form input,
+        .modern-form textarea {
+            width: 94%;
+            padding: 14px 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 15px;
+            background: #f5f5f5;
+            transition: all 0.3s;
+        }
+
+            .modern-form input:focus,
+            .modern-form textarea:focus {
+                border-color: #0c7039;
+                background: #fff;
+                box-shadow: 0 0 0 4px rgba(12, 112, 57, 0.15);
+                outline: none;
+            }
+
+        /* الليبل */
+        .modern-form label {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            background: transparent;
+            font-size: 15px;
+            color: #777;
+            pointer-events: none;
+            transition: 0.3s ease all;
+        }
+
+        /* رفع الليبل عند الكتابة */
+        .modern-form input:focus + label,
+        .modern-form textarea:focus + label,
+        .modern-form input:not(:placeholder-shown) + label,
+        .modern-form textarea:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 12px;
+            font-size: 13px;
+            background: #fff;
+            padding: 0 5px;
+            color: #0c7039;
+        }
 
     /* زر الإرسال */
     .submit-btn {
         background: linear-gradient(to right, #0c7039, #28a745);
         color: white;
         border: none;
-        padding: 12px 30px;
-        font-size: 15px;
-        font-weight: 600;
-        border-radius: 30px;
+        padding: 14px 30px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 50px;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(12, 112, 57, 0.2);
-        width: 100%;
         justify-content: center;
+        width: 100%;
+        transition: 0.3s ease;
+        box-shadow: 0 4px 14px rgba(12, 112, 57, 0.2);
     }
 
         .submit-btn i {
-            margin-left: 8px;
+            margin-left: 10px;
             transition: transform 0.3s ease;
         }
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(12, 112, 57, 0.3);
+            box-shadow: 0 6px 20px rgba(12, 112, 57, 0.3);
         }
 
             .submit-btn:hover i {
-                transform: translateX(4px);
+                transform: translateX(5px);
             }
+
 
     /* النافذة المنبثقة */
     .success-popup {
