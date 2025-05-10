@@ -29,7 +29,7 @@ namespace masterPiece.Controllers
                 HttpContext.Session.SetString("username", user.Username);
                 HttpContext.Session.SetString("userType", user.UserType);
 
-                // دمج السلة من السيشن إلى قاعدة البيانات
+                // دمج السلة من السيشن إلى قاعدة البيانات (نفس الكود اللي عندك تماماً)
                 var sessionCart = HttpContext.Session.GetString("Cart");
                 if (!string.IsNullOrEmpty(sessionCart))
                 {
@@ -43,7 +43,7 @@ namespace masterPiece.Controllers
                             UserId = user.Id
                         };
                         _context.Carts.Add(cart);
-                        _context.SaveChanges(); // لحفظ ID السلة الجديدة
+                        _context.SaveChanges();
                     }
 
                     foreach (var item in cartItems)
@@ -68,11 +68,20 @@ namespace masterPiece.Controllers
                     }
 
                     _context.SaveChanges();
-                    HttpContext.Session.Remove("Cart"); // حذف السلة من الجلسة
+                    HttpContext.Session.Remove("Cart");
                 }
 
-                return RedirectToAction("Index", "Home");
+                // 🔁 التوجيه حسب المستخدم
+                if (user.Email == "admin@gmail.com" && user.PasswordHash == "12345678")
+                {
+                    return RedirectToAction("Index", "AdminDashboard");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
+
 
             ViewBag.Error = "Invalid email or password.";
             return View();
