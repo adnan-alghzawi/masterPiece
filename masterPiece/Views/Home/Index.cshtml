@@ -2,6 +2,8 @@
 @*     ViewData["Title"] = "Home Page"; *@
 @* } *@
 <style>
+    
+
     section.hero {
         position: relative;
         width: 100vw;
@@ -9,30 +11,56 @@
         overflow: hidden;
         padding: 0;
         margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
         section.hero video {
             position: absolute;
-            top: -45px;
+            top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             object-fit: cover;
-            z-index: 1;
+            z-index: -1;
         }
+
+    /* ✅ مركز النصوص */
+    .text {
+        color: white;
+        text-align: center;
+        max-width: 700px;
+        padding: 20px;
+        z-index: 2;
+        background-color: rgba(0, 0, 0, 0.4); /* شفافية خفيفة */
+        border-radius: 10px;
+    }
+
+        .text h2 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .text h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .text p {
+            font-size: 1.1rem;
+        }
+
 </style>
 <section class="hero">
-    <header>
-        <h2 class="logo">Agrix S.A.</h2>
-        <div class="hamburger"></div>
-    </header>
+   
     @* <video src="../wwwroot/images/video.mp4" muted loop autoplay></video> *@
     <video src="@Url.Content("~/images/video.mp4")" muted loop autoplay></video>
 
 
     <div class="text">
-        <h2>Sustainable</h2>
-        <h3>Agriculture</h3>
+        <h2 >Sustainable</h2>
+        <h3 >Agriculture</h3>
         <p>
             Welcome to FIELDLY, where we bring the farm to your doorstep! Discover the freshest local produce,
             connect with passionate farmers, and embrace a sustainable way of living.
@@ -50,7 +78,8 @@
 
     <div class="offer-container">
         <div class="offer-card">
-            <img src="./images/73812955.webp" alt="Agriculture Services" width="400" height="300">
+            <a asp-controller="Users" asp-action="Farmers"><img src="./images/73812955.webp" alt="Agriculture Services" width="400" height="300"></a>
+            
             <h3>Agriculture Services</h3>
             <p>Get experienced workers for crop care and maintenance.</p>
         </div>
@@ -103,32 +132,4 @@
 <br>
 
 
-
-
-
-@* Scaffold-DbContext "Server=DESKTOP-KCF2RKO ;Database=localFarms ;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context MyDbContext *@
-
-@* Install-Package Microsoft.EntityFrameworkCore.SqlServer *@
-@* Install-Package Microsoft.EntityFrameworkCore.Design *@
-@* Install-Package Microsoft.EntityFrameworkCore.Tools *@
-
-
-@* 3- After that inside the same terminal run this command to link between the database that you already have been created and your project *@
-@*  - Don't forget to edit the server name and database name *@
-
-@* Scaffold-DbContext "Server=ااسم السيرفر;Database=اسم الداتابيز;Trusted_Connection=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context MyDbContext *@
-
-
-@* 4- Put this code inside program.cs *@
-
-@* builder.Services.AddDbContext<MyDbContext> *@
-@*     (options => *@
-@*     options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString"))); *@
-
-
-@*     5- Put this code inside appsetting.json *@
-
-@*     "ConnectionStrings": { *@
-@*     "MyConnectionString": "Server=DESKTOP-KCF2RKO ;Database=localFarms ;Trusted_Connection=True;TrustServerCertificate=True;" *@
-@*     } *@
 
