@@ -1,4 +1,4 @@
-body {
+/*body {
     font-family: Arial, sans-serif;
     background-color: #f0f2f5;
     display: flex;
@@ -14,9 +14,9 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 400px;*/
     /* تحديد عرض الحاوية */
-    text-align: center;
+    /*text-align: center;
 }
 
 .header {
@@ -46,15 +46,15 @@ form {
     padding: 20px;
     border-radius: 5px;
     margin-bottom: 15px;
-    text-align: left;
+    text-align: left;*/
     /* تنسيق النص إلى اليسار */
-}
+/*}
 
 .input-container {
     position: relative;
-    margin-bottom: 15px;
+    margin-bottom: 15px;*/
     /* إضافة مسافة بين الحقول */
-}
+/*}
 
 .input-container i {
     position: absolute;
@@ -65,16 +65,16 @@ form {
 }
 
 .input-container input {
-    width: 100%;
+    width: 100%;*/
     /* تأكد من أن الحقول تأخذ عرض الحاوية */
-    padding: 10px 10px 10px 35px;
+    /*padding: 10px 10px 10px 35px;*/
     /* إضافة padding لترك مساحة للأيقونة */
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
-    box-sizing: border-box;
+    box-sizing: border-box;*/
     /* ضمان أن padding لا يؤثر على العرض */
-}
+/*}
 
 .options {
     display: flex;
@@ -155,4 +155,4 @@ a:hover {
 .add-to-cart:active {
     background-color: #3e8e41;
     transform: translateY(0);
-}
+}*/
