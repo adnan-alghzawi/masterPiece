@@ -10,6 +10,8 @@
     @foreach (var Category in Model)
     {
         <div class="category-card">
+            <img src="~/images/@Category.ImagePath" alt="@Category.Name" class="category-image" style="width: 100%;
+    height: 220px;" />
             <h3>@Category.Name</h3>
             <p>@Category.Description</p>
             <a href="/Category/CategoryDetails/@Category.Id" class="view-btn">View products</a>

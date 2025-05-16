@@ -51,12 +51,21 @@ namespace masterPiece.Controllers
             if (category == null)
                 return NotFound();
 
-            return View(category);
+            var model = new CategoryFormViewModel
+            {
+                Id = category.Id,
+                Name = category.Name,
+                Description = category.Description,
+                ExistingImagePath = category.ImagePath
+            };
+
+            return View(model);
         }
+
 
         // POST: Edit Category
         [HttpPost]
-        public IActionResult Edit(Category model)
+        public async Task<IActionResult> Edit(CategoryFormViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -68,10 +77,31 @@ namespace masterPiece.Controllers
             category.Name = model.Name;
             category.Description = model.Description;
 
-            _context.SaveChanges();
+            // تغيير الصورة إذا تم رفع صورة جديدة
+            if (model.Image != null)
+            {
+                // حذف الصورة القديمة إن وجدت وليست الصورة الافتراضية
+                if (!string.IsNullOrEmpty(category.ImagePath) && category.ImagePath != "default.jpg")
+                {
+                    var oldImagePath = Path.Combine("wwwroot/images", category.ImagePath);
+                    if (System.IO.File.Exists(oldImagePath))
+                        System.IO.File.Delete(oldImagePath);
+                }
 
+                // حفظ الصورة الجديدة
+                var newImagePath = Path.Combine("wwwroot/images", model.Image.FileName);
+                using (var stream = new FileStream(newImagePath, FileMode.Create))
+                {
+                    await model.Image.CopyToAsync(stream);
+                }
+
+                category.ImagePath = model.Image.FileName;
+            }
+
+            _context.SaveChanges();
             return RedirectToAction("Index1");
         }
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -108,6 +138,46 @@ namespace masterPiece.Controllers
 
             return RedirectToAction("Index1");
         }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var category = _context.Categories
+                .Include(c => c.Products)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (category == null)
+                return NotFound();
+
+            // حذف المنتجات المرتبطة
+            _context.Products.RemoveRange(category.Products);
+
+            // حذف الصورة
+            if (!string.IsNullOrEmpty(category.ImagePath) && category.ImagePath != "default.jpg")
+            {
+                var path = Path.Combine("wwwroot/images", category.ImagePath);
+                if (System.IO.File.Exists(path))
+                    System.IO.File.Delete(path);
+            }
+
+            _context.Categories.Remove(category);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index1");
+        }
+
+        public IActionResult AdminCategoryProducts(int id)
+        {
+            var category = _context.Categories
+                .Include(c => c.Products)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (category == null)
+                return NotFound();
+
+            return View("AdminCategoryProducts", category.Products.ToList());
+        }
+
 
     }
 }

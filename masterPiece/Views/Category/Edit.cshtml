@@ -1,16 +1,15 @@
-﻿@model masterPiece.Models.Category
+﻿@model masterPiece.ViewModels.CategoryFormViewModel
 @{
     ViewData["Title"] = "Edit Category";
     Layout = "_Admin";
 }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
 <div class="container mt-5" style="max-width: 600px;">
     <h2 class="text-success mb-4"><i class="fas fa-edit"></i> Edit Category</h2>
 
-    <form asp-action="Edit" method="post">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ExistingImagePath" />
 
         <div class="form-group mb-3">
             <label asp-for="Name" class="form-label">Name</label>
@@ -21,7 +20,16 @@
         <div class="form-group mb-3">
             <label asp-for="Description" class="form-label">Description</label>
             <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="form-label">Current Image</label><br />
+            <img src="~/images/@Model.ExistingImagePath" alt="Category Image" style="width:100%; max-height:220px; object-fit:cover;" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Image" class="form-label">Change Image</label>
+            <input asp-for="Image" type="file" class="form-control" />
         </div>
 
         <button type="submit" class="btn btn-success">
