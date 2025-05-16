@@ -7,7 +7,7 @@ public partial class Product
 {
     public int Id { get; set; }
 
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -31,5 +31,5 @@ public partial class Product
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 
-    public virtual User User { get; set; } = null!;
+    public virtual User? User { get; set; }
 }

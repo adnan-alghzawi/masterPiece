@@ -1,23 +1,157 @@
 ﻿@model List<masterPiece.Models.Product>
-
-@section Styles {
-    <link rel="stylesheet" href="~/css/product.css" />
+@{
+    ViewData["Title"] = "All Products";
+    Layout = "_Admin";
 }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-<h2 style="text-align: center; margin-top: 4.5%;">Products</h2>
-
-<section class="product_container">
-    @foreach (var product in Model)
-    {
-        <div class="product">
-            <img src="@Url.Content("~/images/" + (product.ImagePath ?? "default.jpg"))" alt="@product.Name" />
-            <h3>@product.Name</h3>
-            <p>$@product.Price</p>
-            @* <a href="#" class="add-to-cart">Add to Cart</a> *@
-            <a href="/Cart/AddToCart/@product.Id" class="add-to-cart">Add to Cart</a>
-
-            <a href="/Products/ProductDetails/@product.Id" class="add-to-cart">View Details</a>
-
-        </div>
+<style>
+    body {
+        background-color: #f5f9f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-</section>
+
+    .admin-products-wrapper {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin: 40px auto;
+        max-width: 1200px;
+    }
+
+        .admin-products-wrapper h2 {
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+            .admin-products-wrapper h2 i {
+                margin-right: 12px;
+                color: #388e3c;
+            }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .table thead th {
+        background-color: #2e7d32;
+        color: white;
+        font-size: 0.85rem;
+        padding: 12px;
+        text-transform: uppercase;
+    }
+
+    .table td {
+        padding: 10px;
+        vertical-align: middle;
+    }
+
+    .product-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-badge {
+        background-color: #e0f2f1;
+        color: #00695c;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+    }
+
+    .edit-btn {
+        background-color: #1976d2;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .dropdown-status {
+        padding: 4px 8px;
+        font-size: 0.85rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+</style>
+
+<div class="container admin-products-wrapper">
+    <h2><i class="fas fa-boxes"></i> Product Management</h2>
+
+   
+</div>
+
+<form method="get" asp-action="Index" class="d-flex gap-2">
+    <select name="status" onchange="this.form.submit()" class="form-select" style="max-width: 200px;">
+        <option value="all" selected="@(ViewBag.CurrentStatus == "all")">All Products</option>
+        <option value="active" selected="@(ViewBag.CurrentStatus == "active")">Active</option>
+        <option value="unavailable" selected="@(ViewBag.CurrentStatus == "unavailable")">Unavailable</option>
+    </select>
+</form>
+
+
+
+    <div style="text-align: right; margin-bottom: 15px;">
+        <a href="/Products/Create" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Add Product
+        </a>
+    </div>
+
+    <div class="table-container">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.Id</td>
+                        <td>
+                            <img src="@Url.Content("~/images/" + (product.ImagePath ?? "default.jpg"))" alt="@product.Name" class="product-image" />
+                        </td>
+                        <td>@product.Name</td>
+                        <td>$@product.Price</td>
+                        <td>@product.QuantityAvailable</td>
+                        <td>
+                            @Html.Raw(product.Category != null
+                                     ? $"<span class='category-badge'>{product.Category.Name}</span>"
+                                     : "<span class='text-muted'>Uncategorized</span>")
+                        </td>
+                        <td>
+                            <form asp-action="ChangeStatus" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@product.Id" />
+                                <select name="newStatus" class="dropdown-status" onchange="this.form.submit()">
+                                    <option value="true" selected="@(product.IsActive == true)">Active</option>
+                                    <option value="false" selected="@(product.IsActive == false)">Unavailable</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>
+                        <a href="/Products/Edit/@product.Id" class="btn btn-success">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

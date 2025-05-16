@@ -1,4 +1,5 @@
 ﻿using masterPiece.Models;
+using masterPiece.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -225,6 +226,49 @@ namespace masterPiece.Controllers
             TempData["PasswordSuccess"] = "Password updated successfully!";
             return RedirectToAction("EditProfile");
         }
+        //public IActionResult AllUsers()
+        //{
+        //    //if (HttpContext.Session.GetString("userType") != "Admin")
+        //    //    return RedirectToAction("Login");
+
+        //    var users = _context.Users.ToList();
+        //    return View(users);
+        //}
+        public IActionResult AllUsers(string search = "", int page = 1)
+        {
+            int pageSize = 5;
+
+            var query = _context.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(u =>
+                    u.Username.Contains(search) ||
+                    u.Email.Contains(search) ||
+                    u.UserType.Contains(search)
+                );
+            }
+
+            int totalUsers = query.Count();
+            int totalPages = (int)Math.Ceiling(totalUsers / (double)pageSize);
+
+            var users = query
+                .OrderBy(u => u.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var vm = new UserListViewModel
+            {
+                Users = users,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                SearchQuery = search
+            };
+
+            return View(vm);
+        }
+
 
     }
 }

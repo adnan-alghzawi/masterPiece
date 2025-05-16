@@ -81,6 +81,7 @@ public partial class MyDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Categori__3214EC07B4082DEF");
 
             entity.Property(e => e.Description).HasMaxLength(255);
+            entity.Property(e => e.ImagePath).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(100);
         });
 
@@ -167,7 +168,6 @@ public partial class MyDbContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Products)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Products__UserID__3E52440B");
         });
 
