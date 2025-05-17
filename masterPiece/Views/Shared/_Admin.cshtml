@@ -57,8 +57,13 @@
         <a href="/Category/Index1">Categories</a>
         <a href="/Products">Products</a>
 
-        <a href="/Orders">Orders</a>
-        <a href="/Subscriptions">Subscriptions</a>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="AdminOrders" asp-action="Index">
+                <i class="fa fa-box"></i> Manage Orders
+            </a>
+        </li>
+
+        @* <a href="/Subscriptions">Subscriptions</a> *@
         
         <a href="/Users/Logout">Logout</a>
     </div>

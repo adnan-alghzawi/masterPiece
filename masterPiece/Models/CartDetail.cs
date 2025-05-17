@@ -5,11 +5,11 @@ namespace masterPiece.Models;
 
 public partial class CartDetail
 {
-    public int Id { get; set; }
+    public int ID { get; set; }
 
-    public int CartId { get; set; }
+    public int CartID { get; set; }
 
-    public int ProductId { get; set; }
+    public int ProductID { get; set; }
 
     public int Quantity { get; set; }
 

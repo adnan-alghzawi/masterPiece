@@ -1,0 +1,56 @@
+﻿@model masterPiece.ViewModels.FarmerProfileViewModel
+
+<div class="container py-5">
+    <h2 class="text-success text-center mb-4">👨‍🌾 @Model.Farmer.Username's Profile</h2>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-4 text-center">
+            <img src="@(!string.IsNullOrEmpty(Model.Farmer.ProfilePicture) ? Model.Farmer.ProfilePicture : "/images/default-profile.png")"
+                 class="rounded-circle shadow"
+                 style="width: 150px; height: 150px; object-fit: cover;" />
+            <h4 class="mt-3">@Model.Farmer.Username</h4>
+            <p><strong>Email:</strong> @Model.Farmer.Email</p>
+            <p><strong>Phone:</strong> @(string.IsNullOrEmpty(Model.Farmer.PhoneNumber) ? "Not Provided" : Model.Farmer.PhoneNumber)</p>
+            <p>
+                <strong>Status:</strong>
+                @if (Model.Farmer.IsActive == true)
+                {
+                    <span class="badge bg-success">Active</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Inactive</span>
+                }
+            </p>
+        </div>
+    </div>
+
+    <hr />
+    <h4 class="text-center text-dark mb-4">🛠️ Previous Works</h4>
+
+    @if (Model.Works.Any())
+    {
+        <div class="row">
+            @foreach (var work in Model.Works)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="@(!string.IsNullOrEmpty(work.ImagePath) ? work.ImagePath : "/images/default-work.jpg")"
+                             class="card-img-top"
+                             style="height: 200px; object-fit: cover;" />
+
+                        <div class="card-body">
+                            <h5 class="card-title">@work.Title</h5>
+                            <p class="card-text">@work.Description</p>
+                            <small class="text-muted">Posted on @work.CreatedAt.ToString("yyyy-MM-dd")</small>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted text-center">No previous works uploaded yet.</p>
+    }
+</div>

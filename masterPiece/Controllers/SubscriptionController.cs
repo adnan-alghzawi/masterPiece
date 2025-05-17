@@ -22,13 +22,13 @@ namespace masterPiece.Controllers
         public IActionResult Subscribe(string planName)
         {
             // ✅ تحقق من تسجيل الدخول
-            var userId = HttpContext.Session.GetInt32("UserID");
+            var userId = HttpContext.Session.GetInt32("userId");
             if (userId == null)
                 return RedirectToAction("Login", "Users");
 
             // ✅ تحقق من وجود اشتراك فعّال
             var activeSubscription = _context.Subscriptions
-                .FirstOrDefault(s => s.UserId == userId && s.IsActive == true && s.EndDate > DateTime.Now);
+                .FirstOrDefault(s => s.UserID == userId && s.IsActive == true && s.EndDate > DateTime.Now);
 
             if (activeSubscription != null)
             {
@@ -48,7 +48,7 @@ namespace masterPiece.Controllers
 
             var subscription = new Subscription
             {
-                UserId = userId.Value,
+                UserID = userId.Value,
                 PlanName = planName,
                 StartDate = start,
                 EndDate = end,

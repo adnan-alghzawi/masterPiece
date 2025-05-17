@@ -29,7 +29,7 @@ namespace masterPiece.Controllers
                     .Take(5)
                     .Select(o => new RecentOrder
                     {
-                        OrderId = o.Id,
+                        OrderId = o.ID,
                         CustomerName = o.User.Username,
                         OrderDate = o.OrderDate,
                         TotalAmount = o.TotalAmount,

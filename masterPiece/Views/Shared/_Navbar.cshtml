@@ -14,17 +14,17 @@
         <li><a href="/Home/Index">Home</a></li>
         
         <li><a asp-controller="Home" asp-action="About">About Us</a></li>
+        <li><a asp-controller="Home" asp-action="Contact">Contact us</a></li>
 
         <li><a href="/Category">Shop</a></li>
         @* <li><a href="/Category">category</a></li> *@
 
-        <li><a asp-controller="Subscription" asp-action="Index">Subscriptions</a></li>
+        @* <li><a asp-controller="Subscription" asp-action="Index">Subscriptions</a></li> *@
 
         <li><a asp-controller="Users" asp-action="Farmers">Farmers</a></li>
 
         <li><a asp-controller="Home" asp-action="Map">Map</a></li>
         
-        <li><a asp-controller="Home" asp-action="Contact">Contact us</a></li>
 
         @if (Context.Session.GetInt32("userId") != null)
         {

@@ -19,7 +19,7 @@ namespace masterPiece.Controllers
             var productsQuery = _context.Products
                 .Select(p => new Product
                 {
-                    Id = p.Id,
+                    UserID = p.ID,
                     Name = p.Name,
                     Price = p.Price,
                     QuantityAvailable = p.QuantityAvailable,
@@ -117,7 +117,7 @@ namespace masterPiece.Controllers
         [HttpPost]
         public IActionResult ChangeStatus(int id, bool newStatus)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(p => p.ID == id);
             if (product == null)
                 return NotFound();
 
@@ -129,7 +129,7 @@ namespace masterPiece.Controllers
 
         public IActionResult Edit(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(p => p.ID == id);
             if (product == null) return NotFound();
 
             var vm = new ProductFormViewModel
@@ -154,7 +154,7 @@ namespace masterPiece.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, ProductFormViewModel model)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(p => p.ID == id);
             if (product == null) return NotFound();
 
             if (!ModelState.IsValid)

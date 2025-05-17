@@ -5,7 +5,7 @@ namespace masterPiece.Models;
 
 public partial class User
 {
-    public int Id { get; set; }
+    public int ID { get; set; }
 
     public string Username { get; set; } = null!;
 
@@ -22,6 +22,8 @@ public partial class User
     public string? ProfilePicture { get; set; }
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
+
+    public virtual ICollection<FarmerWork> FarmerWorks { get; set; } = new List<FarmerWork>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 

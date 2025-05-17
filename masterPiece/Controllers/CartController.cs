@@ -23,13 +23,13 @@ namespace masterPiece.Controllers
                 var cart = _context.Carts
                     .Include(c => c.CartDetails)
                     .ThenInclude(cd => cd.Product)
-                    .FirstOrDefault(c => c.UserId == userId);
+                    .FirstOrDefault(c => c.UserID == userId);
 
                 if (cart != null)
                 {
                     var items = cart.CartDetails.Select(cd => new Dictionary<string, object>
                     {
-                        ["ProductId"] = cd.ProductId,
+                        ["ProductId"] = cd.ProductID,
                         ["Name"] = cd.Product?.Name ?? "",
                         ["Price"] = cd.Product?.Price ?? 0,
                         ["Quantity"] = cd.Quantity,
@@ -52,7 +52,7 @@ namespace masterPiece.Controllers
 
         public IActionResult AddToCart(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(p => p.ID == id);
             if (product == null) return NotFound();
 
             int? userId = HttpContext.Session.GetInt32("userId");
@@ -70,7 +70,7 @@ namespace masterPiece.Controllers
                 {
                     cart.Add(new Dictionary<string, object>
                     {
-                        ["ProductId"] = product.Id,
+                        ["ProductId"] = product.ID,
                         ["Name"] = product.Name,
                         ["Price"] = product.Price,
                         ["Quantity"] = 1,
@@ -82,15 +82,15 @@ namespace masterPiece.Controllers
             }
             else
             {
-                var cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
+                var cart = _context.Carts.FirstOrDefault(c => c.UserID == userId);
                 if (cart == null)
                 {
-                    cart = new Cart { UserId = userId.Value };
+                    cart = new Cart { UserID = userId.Value };
                     _context.Carts.Add(cart);
                     _context.SaveChanges();
                 }
 
-                var cartItem = _context.CartDetails.FirstOrDefault(cd => cd.CartId == cart.Id && cd.ProductId == id);
+                var cartItem = _context.CartDetails.FirstOrDefault(cd => cd.CartID == cart.ID && cd.ProductID == id);
 
                 if (cartItem != null)
                 {
@@ -100,8 +100,8 @@ namespace masterPiece.Controllers
                 {
                     _context.CartDetails.Add(new CartDetail
                     {
-                        CartId = cart.Id,
-                        ProductId = product.Id,
+                        CartID = cart.ID,
+                        ProductID = product.ID,
                         Quantity = 1
                     });
                 }
@@ -160,10 +160,10 @@ namespace masterPiece.Controllers
             if (userId != null)
             {
                 // المستخدم مسجل دخول ⇒ نعدّل على CartDetails في قاعدة البيانات
-                var cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
+                var cart = _context.Carts.FirstOrDefault(c => c.UserID == userId);
                 if (cart != null)
                 {
-                    var cartItem = _context.CartDetails.FirstOrDefault(cd => cd.CartId == cart.Id && cd.ProductId == productId);
+                    var cartItem = _context.CartDetails.FirstOrDefault(cd => cd.CartID == cart.ID && cd.ProductID == productId);
                     if (cartItem != null)
                     {
                         cartItem.Quantity = quantity;
@@ -197,7 +197,7 @@ namespace masterPiece.Controllers
                 return RedirectToAction("Register", "Users");
             }
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            var user = _context.Users.FirstOrDefault(u => u.ID == userId);
 
             if (user == null)
             {
@@ -213,14 +213,14 @@ namespace masterPiece.Controllers
 
             if (userId != null)
             {
-                var cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
+                var cart = _context.Carts.FirstOrDefault(c => c.UserID == userId);
                 if (cart != null)
                 {
                     var items = _context.CartDetails
-                        .Where(cd => cd.CartId == cart.Id)
+                        .Where(cd => cd.CartID == cart.ID)
                         .Select(cd => new
                         {
-                            cd.ProductId,
+                            cd.ProductID,
                             ProductName = cd.Product.Name,
                             Price = cd.Product.Price,
                             Quantity = cd.Quantity,
@@ -229,7 +229,7 @@ namespace masterPiece.Controllers
                         .ToList()
                         .Select(item => new Dictionary<string, object>
                         {
-                            ["ProductId"] = item.ProductId,
+                            ["ProductId"] = item.ProductID,
                             ["Name"] = item.ProductName,
                             ["Price"] = item.Price,
                             ["Quantity"] = item.Quantity,
@@ -306,7 +306,7 @@ namespace masterPiece.Controllers
                 return RedirectToAction("Login", "Users");
             }
 
-            var cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
+            var cart = _context.Carts.FirstOrDefault(c => c.UserID == userId);
             if (cart == null)
             {
                 TempData["Error"] = "Your cart is empty.";
@@ -316,7 +316,7 @@ namespace masterPiece.Controllers
             // 🔥 هنا بنجيب كل العناصر + السعر الفعلي للمنتج
             var cartItems = _context.CartDetails
                 .Include(cd => cd.Product) // ✅ مهم جدًا
-                .Where(cd => cd.CartId == cart.Id)
+                .Where(cd => cd.CartID == cart.ID)
                 .ToList();
 
             // نحسب التوتال الصحيح
@@ -325,7 +325,7 @@ namespace masterPiece.Controllers
             // نحفظ الطلب
             var order = new Order
             {
-                UserId = userId.Value,
+                UserID = userId.Value,
                 OrderDate = DateTime.Now,
                 TotalAmount = total,
                 Status = "Pending",

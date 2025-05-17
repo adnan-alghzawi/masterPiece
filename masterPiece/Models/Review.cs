@@ -5,13 +5,13 @@ namespace masterPiece.Models;
 
 public partial class Review
 {
-    public int Id { get; set; }
+    public int ID { get; set; }
 
-    public int OrderId { get; set; }
+    public int OrderID { get; set; }
 
-    public int ProductId { get; set; }
+    public int ProductID { get; set; }
 
-    public int UserId { get; set; }
+    public int UserID { get; set; }
 
     public int Rating { get; set; }
 

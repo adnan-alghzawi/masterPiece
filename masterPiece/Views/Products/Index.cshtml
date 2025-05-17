@@ -123,7 +123,7 @@
                 @foreach (var product in Model)
                 {
                     <tr>
-                        <td>@product.Id</td>
+                        <td>@product.ID</td>
                         <td>
                             <img src="@Url.Content("~/images/" + (product.ImagePath ?? "default.jpg"))" alt="@product.Name" class="product-image" />
                         </td>
@@ -137,7 +137,7 @@
                         </td>
                         <td>
                             <form asp-action="ChangeStatus" method="post" style="display:inline;">
-                                <input type="hidden" name="id" value="@product.Id" />
+                                <input type="hidden" name="id" value="@product.ID" />
                                 <select name="newStatus" class="dropdown-status" onchange="this.form.submit()">
                                     <option value="true" selected="@(product.IsActive == true)">Active</option>
                                     <option value="false" selected="@(product.IsActive == false)">Unavailable</option>
@@ -145,7 +145,7 @@
                             </form>
                         </td>
                         <td>
-                        <a href="/Products/Edit/@product.Id" class="btn btn-success">
+                        <a href="/Products/Edit/@product.ID" class="btn btn-success">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
                         </td>

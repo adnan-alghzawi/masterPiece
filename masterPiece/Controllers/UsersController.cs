@@ -26,22 +26,21 @@ namespace masterPiece.Controllers
 
             if (user != null)
             {
-                HttpContext.Session.SetInt32("userId", user.Id);
+                HttpContext.Session.SetInt32("userId", user.ID);
                 HttpContext.Session.SetString("username", user.Username);
                 HttpContext.Session.SetString("userType", user.UserType);
 
-                // دمج السلة من السيشن إلى قاعدة البيانات (نفس الكود اللي عندك تماماً)
                 var sessionCart = HttpContext.Session.GetString("Cart");
                 if (!string.IsNullOrEmpty(sessionCart))
                 {
                     var cartItems = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(sessionCart);
 
-                    var cart = _context.Carts.FirstOrDefault(c => c.UserId == user.Id);
+                    var cart = _context.Carts.FirstOrDefault(c => c.UserID == user.ID);
                     if (cart == null)
                     {
                         cart = new Cart
                         {
-                            UserId = user.Id
+                            UserID = user.ID
                         };
                         _context.Carts.Add(cart);
                         _context.SaveChanges();
@@ -52,7 +51,7 @@ namespace masterPiece.Controllers
                         int productId = Convert.ToInt32(item["ProductId"]);
                         int quantity = Convert.ToInt32(item["Quantity"]);
 
-                        var existingDetail = _context.CartDetails.FirstOrDefault(cd => cd.CartId == cart.Id && cd.ProductId == productId);
+                        var existingDetail = _context.CartDetails.FirstOrDefault(cd => cd.CartID == cart.ID && cd.ProductID == productId);
                         if (existingDetail != null)
                         {
                             existingDetail.Quantity += quantity;
@@ -61,8 +60,8 @@ namespace masterPiece.Controllers
                         {
                             _context.CartDetails.Add(new CartDetail
                             {
-                                CartId = cart.Id,
-                                ProductId = productId,
+                                CartID = cart.ID,
+                                ProductID = productId,
                                 Quantity = quantity
                             });
                         }
@@ -72,7 +71,6 @@ namespace masterPiece.Controllers
                     HttpContext.Session.Remove("Cart");
                 }
 
-                // 🔁 التوجيه حسب المستخدم
                 if (user.Email == "admin@gmail.com" && user.PasswordHash == "12345678")
                 {
                     return RedirectToAction("Index", "AdminDashboard");
@@ -82,7 +80,6 @@ namespace masterPiece.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-
 
             ViewBag.Error = "Invalid email or password.";
             return View();
@@ -115,7 +112,7 @@ namespace masterPiece.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            HttpContext.Session.SetInt32("userId", user.Id);
+            HttpContext.Session.SetInt32("userId", user.ID);
             HttpContext.Session.SetString("username", user.Username);
             HttpContext.Session.SetString("userType", user.UserType);
 
@@ -127,15 +124,17 @@ namespace masterPiece.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
+
         public IActionResult Profile()
         {
             int? userId = HttpContext.Session.GetInt32("userId");
             if (userId == null)
                 return RedirectToAction("Login");
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            var user = _context.Users.FirstOrDefault(u => u.ID == userId);
             return View(user);
         }
+
         public IActionResult MyOrders()
         {
             int? userId = HttpContext.Session.GetInt32("userId");
@@ -143,12 +142,13 @@ namespace masterPiece.Controllers
                 return RedirectToAction("Login");
 
             var orders = _context.Orders
-                .Where(o => o.UserId == userId)
+                .Where(o => o.UserID == userId)
                 .OrderByDescending(o => o.OrderDate)
                 .ToList();
 
             return View(orders);
         }
+
         public IActionResult Farmers()
         {
             var farmers = _context.Users
@@ -157,13 +157,33 @@ namespace masterPiece.Controllers
 
             return View(farmers);
         }
+
+        public IActionResult FarmerProfile(int id)
+        {
+            var farmer = _context.Users.FirstOrDefault(u => u.ID == id && u.UserType.ToLower() == "farmer");
+            if (farmer == null) return NotFound();
+
+            var works = _context.FarmerWorks
+                .Where(w => w.UserId == id)
+                .OrderByDescending(w => w.CreatedAt)
+                .ToList();
+
+            var vm = new FarmerProfileViewModel
+            {
+                Farmer = farmer,
+                Works = works
+            };
+
+            return View(vm);
+        }
+
         public IActionResult EditProfile()
         {
             int? userId = HttpContext.Session.GetInt32("userId");
             if (userId == null)
                 return RedirectToAction("Login");
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            var user = _context.Users.FirstOrDefault(u => u.ID == userId);
             return View(user);
         }
 
@@ -174,7 +194,7 @@ namespace masterPiece.Controllers
             if (userId == null)
                 return RedirectToAction("Login");
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            var user = _context.Users.FirstOrDefault(u => u.ID == userId);
             if (user != null)
             {
                 user.Username = model.Username;
@@ -194,7 +214,7 @@ namespace masterPiece.Controllers
             if (userId == null)
                 return RedirectToAction("Login");
 
-            return View(); // View بدون موديل
+            return View();
         }
 
         [HttpPost]
@@ -204,7 +224,7 @@ namespace masterPiece.Controllers
             if (userId == null)
                 return RedirectToAction("Login");
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            var user = _context.Users.FirstOrDefault(u => u.ID == userId);
             if (user == null)
                 return RedirectToAction("Login");
 
@@ -226,14 +246,7 @@ namespace masterPiece.Controllers
             TempData["PasswordSuccess"] = "Password updated successfully!";
             return RedirectToAction("EditProfile");
         }
-        //public IActionResult AllUsers()
-        //{
-        //    //if (HttpContext.Session.GetString("userType") != "Admin")
-        //    //    return RedirectToAction("Login");
 
-        //    var users = _context.Users.ToList();
-        //    return View(users);
-        //}
         public IActionResult AllUsers(string search = "", int page = 1)
         {
             int pageSize = 5;
@@ -253,7 +266,7 @@ namespace masterPiece.Controllers
             int totalPages = (int)Math.Ceiling(totalUsers / (double)pageSize);
 
             var users = query
-                .OrderBy(u => u.Id)
+                .OrderBy(u => u.ID)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
@@ -268,7 +281,5 @@ namespace masterPiece.Controllers
 
             return View(vm);
         }
-
-
     }
 }

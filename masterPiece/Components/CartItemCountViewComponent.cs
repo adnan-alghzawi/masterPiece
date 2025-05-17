@@ -21,11 +21,11 @@ namespace masterPiece.Components
             if (userId != null)
             {
                 // مستخدم مسجّل دخول → نجيب السلة من الداتابيس
-                var cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
+                var cart = _context.Carts.FirstOrDefault(c => c.UserID == userId);
                 if (cart != null)
                 {
                     itemCount = _context.CartDetails
-                        .Where(cd => cd.CartId == cart.Id)
+                        .Where(cd => cd.CartID == cart.ID)
                         .Sum(cd => cd.Quantity);
                 }
             }
