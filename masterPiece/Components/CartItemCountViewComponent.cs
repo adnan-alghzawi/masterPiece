@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using masterPiece.Models;
+using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace masterPiece.Components
 {
@@ -16,34 +18,34 @@ namespace masterPiece.Components
         {
             int itemCount = 0;
 
-            int? userId = HttpContext.Session.GetInt32("userId");
+            // ✅ تأكدنا من اسم الجلسة الصحيح (UserID)
+            int? userId = HttpContext.Session.GetInt32("UserID");
 
             if (userId != null)
             {
-                // مستخدم مسجّل دخول → نجيب السلة من الداتابيس
-                var cart = _context.Carts.FirstOrDefault(c => c.UserID == userId);
+                // ✅ مستخدم مسجل دخول → من قاعدة البيانات
+                var cart = _context.Carts
+                    .Include(c => c.CartDetails)
+                    .FirstOrDefault(c => c.UserID == userId);
+
                 if (cart != null)
                 {
-                    itemCount = _context.CartDetails
-                        .Where(cd => cd.CartID == cart.ID)
-                        .Sum(cd => cd.Quantity);
+                    itemCount = cart.CartDetails.Sum(cd => cd.Quantity);
                 }
             }
             else
             {
-                // مستخدم غير مسجّل دخول → نقرأ من السيشن
+                // ✅ مستخدم غير مسجل → نقرأ من Session
                 var cartJson = HttpContext.Session.GetString("Cart");
                 if (!string.IsNullOrEmpty(cartJson))
                 {
-                    var items = Newtonsoft.Json.JsonConvert
-                        .DeserializeObject<List<Dictionary<string, object>>>(cartJson);
+                    var items = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(cartJson);
                     itemCount = items.Sum(item => Convert.ToInt32(item["Quantity"]));
                 }
             }
 
-            return View("_CartItemCount", itemCount);
+            // ✅ العرض يتم من View باسم Default.cshtml
+            return View("Default", itemCount);
         }
-
-
     }
 }

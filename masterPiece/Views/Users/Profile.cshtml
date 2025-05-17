@@ -6,78 +6,131 @@
 
 @section Styles {
     <style>
-        .profile-wrapper {
-            margin-top: 5%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            background: #fff;
-            border-radius: 16px;
-            padding: 30px 40px;
-            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.1);
-            border: 1px solid #e0f2f1;
+        .profile-container {
+            margin: 2rem auto;
+            max-width: 800px;
+            padding: 2rem;
         }
 
-            .profile-wrapper h2 {
-                text-align: center;
-                color: #4CAF50;
-                font-weight: bold;
-                margin-bottom: 30px;
-            }
-
-        .profile-info p {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .profile-info strong {
-            color: #555;
-        }
-
-        .profile-actions a {
-            display: block;
-            width: 100%;
-            margin-bottom: 12px;
-            padding: 12px;
+        .profile-header {
             text-align: center;
-            border-radius: 8px;
-            font-weight: 500;
-            color: white;
-            text-decoration: none;
-            transition: all 0.2s ease-in-out;
+            margin-bottom: 2rem;
+            color: #2E7D32;
         }
 
-            .profile-actions a:first-child {
-                background-color: #4CAF50;
+        .profile-card {
+            background: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-info-item {
+            display: flex;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #EEEEEE;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #424242;
+            min-width: 120px;
+        }
+
+        .info-value {
+            color: #616161;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .view-orders {
+            background-color: #388E3C;
+            color: white;
+        }
+
+            .view-orders:hover {
+                background-color: #2E7D32;
             }
 
-                .profile-actions a:first-child:hover {
-                    background-color: #45a049;
-                }
+        .edit-profile {
+            background-color: #1976D2;
+            color: white;
+        }
 
-            .profile-actions a:last-child {
-                background-color: #2196F3;
+            .edit-profile:hover {
+                background-color: #1565C0;
             }
 
-                .profile-actions a:last-child:hover {
-                    background-color: #1976D2;
-                }
+        @@media (max-width: 768px) {
+            .profile-container {
+                padding: 1rem;
+            }
+
+            .profile-info-item {
+                flex-direction: column;
+            }
+
+            .info-label {
+                margin-bottom: 0.5rem;
+            }
+        }
     </style>
 }
 
-<div class="profile-wrapper">
-    <h2>👤 My Profile</h2>
+<div class="profile-container">
+    <h1 class="profile-header">My Profile</h1>
 
-    <div class="profile-info">
-        <p><strong>Username:</strong> @Model.Username</p>
-        <p><strong>Email:</strong> @Model.Email</p>
-        <p><strong>Phone:</strong> @Model.PhoneNumber</p>
-        <p><strong>User Type:</strong> @Model.UserType</p>
-    </div>
+    <div class="profile-card">
+        <div class="profile-info">
+            <div class="profile-info-item">
+                <span class="info-label">Username:</span>
+                <span class="info-value">@Model.Username</span>
+            </div>
 
-    <div class="profile-actions">
-        <a href="/Users/MyOrders">📦 View My Orders</a>
-        <a href="/Users/EditProfile">✏️ Edit Profile</a>
+            <div class="profile-info-item">
+                <span class="info-label">Email:</span>
+                <span class="info-value">@Model.Email</span>
+            </div>
+
+            <div class="profile-info-item">
+                <span class="info-label">Phone:</span>
+                <span class="info-value">@Model.PhoneNumber</span>
+            </div>
+
+            <div class="profile-info-item">
+                <span class="info-label">User Type:</span>
+                <span class="info-value">@Model.UserType</span>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a href="/Users/MyOrders" class="action-btn view-orders">
+                <i class="fas fa-box-open"></i> View My Orders
+            </a>
+            <a href="/Users/EditProfile" class="action-btn edit-profile">
+                <i class="fas fa-user-edit"></i> Edit Profile
+            </a>
+        </div>
     </div>
 </div>

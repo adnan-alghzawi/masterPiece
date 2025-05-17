@@ -86,18 +86,21 @@
 <div class="container admin-products-wrapper">
     <h2><i class="fas fa-boxes"></i> Product Management</h2>
 
-   
-</div>
+    @if (TempData["StatusChanged"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["StatusChanged"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
-<form method="get" asp-action="Index" class="d-flex gap-2">
-    <select name="status" onchange="this.form.submit()" class="form-select" style="max-width: 200px;">
-        <option value="all" selected="@(ViewBag.CurrentStatus == "all")">All Products</option>
-        <option value="active" selected="@(ViewBag.CurrentStatus == "active")">Active</option>
-        <option value="unavailable" selected="@(ViewBag.CurrentStatus == "unavailable")">Unavailable</option>
-    </select>
-</form>
-
-
+    <form method="get" asp-action="Index" class="d-flex gap-2 mb-3">
+        <select name="status" onchange="this.form.submit()" class="form-select" style="max-width: 200px;">
+            <option value="all" selected="@(ViewBag.CurrentStatus == "all")">All Products</option>
+            <option value="active" selected="@(ViewBag.CurrentStatus == "active")">Active</option>
+            <option value="unavailable" selected="@(ViewBag.CurrentStatus == "unavailable")">Unavailable</option>
+        </select>
+    </form>
 
     <div style="text-align: right; margin-bottom: 15px;">
         <a href="/Products/Create" class="btn btn-success">
@@ -136,16 +139,17 @@
                                      : "<span class='text-muted'>Uncategorized</span>")
                         </td>
                         <td>
-                            <form asp-action="ChangeStatus" method="post" style="display:inline;">
+                            <form asp-action="ChangeStatus" asp-controller="Products" method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="@product.ID" />
                                 <select name="newStatus" class="dropdown-status" onchange="this.form.submit()">
                                     <option value="true" selected="@(product.IsActive == true)">Active</option>
                                     <option value="false" selected="@(product.IsActive == false)">Unavailable</option>
                                 </select>
                             </form>
+
                         </td>
                         <td>
-                        <a href="/Products/Edit/@product.ID" class="btn btn-success">
+                            <a href="/Products/Edit/@product.ID" class="btn btn-success">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
                         </td>

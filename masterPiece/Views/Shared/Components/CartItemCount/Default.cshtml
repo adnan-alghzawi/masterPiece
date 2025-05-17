@@ -1,0 +1,22 @@
+﻿@model int
+
+<li>
+    <a href="/Cart" style="position: relative;">
+        Cart <i class="fas fa-shopping-cart"></i>
+        @if (Model > 0)
+        {
+            <span style="
+                position: absolute;
+                top: -8px;
+                right: -10px;
+                background-color: green;
+                color: white;
+                font-size: 12px;
+                padding: 2px 6px;
+                border-radius: 50%;
+                font-weight: bold;">
+                @Model
+            </span>
+        }
+    </a>
+</li>

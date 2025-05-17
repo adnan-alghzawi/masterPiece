@@ -16,7 +16,7 @@ namespace masterPiece.Controllers
 
         public IActionResult Index()
         {
-            int? userId = HttpContext.Session.GetInt32("userId");
+            int? userId = HttpContext.Session.GetInt32("UserID");
 
             if (userId != null)
             {
@@ -55,7 +55,7 @@ namespace masterPiece.Controllers
             var product = _context.Products.FirstOrDefault(p => p.ID == id);
             if (product == null) return NotFound();
 
-            int? userId = HttpContext.Session.GetInt32("userId");
+            int? userId = HttpContext.Session.GetInt32("UserID");
 
             if (userId == null)
             {
@@ -114,16 +114,35 @@ namespace masterPiece.Controllers
 
         public IActionResult Remove(int id)
         {
-            var cart = GetCartFromSession();
-            var item = cart.FirstOrDefault(i => Convert.ToInt32(i["ProductId"]) == id);
-            if (item != null)
+            int? userId = HttpContext.Session.GetInt32("UserID");
+
+            if (userId != null)
             {
-                cart.Remove(item);
-                SaveCartToSession(cart);
+                var cart = _context.Carts.FirstOrDefault(c => c.UserID == userId);
+                if (cart != null)
+                {
+                    var cartItem = _context.CartDetails.FirstOrDefault(cd => cd.CartID == cart.ID && cd.ProductID == id);
+                    if (cartItem != null)
+                    {
+                        _context.CartDetails.Remove(cartItem);
+                        _context.SaveChanges();
+                    }
+                }
+            }
+            else
+            {
+                var cart = GetCartFromSession();
+                var item = cart.FirstOrDefault(i => Convert.ToInt32(i["ProductId"]) == id);
+                if (item != null)
+                {
+                    cart.Remove(item);
+                    SaveCartToSession(cart);
+                }
             }
 
             return RedirectToAction("Index");
         }
+
 
         private List<Dictionary<string, object>> GetCartFromSession()
         {
@@ -141,7 +160,7 @@ namespace masterPiece.Controllers
         [HttpPost]
         public IActionResult UpdateQuantity(int productId, int quantity)
         {
-            int? userId = HttpContext.Session.GetInt32("userId");
+            int? userId = HttpContext.Session.GetInt32("UserID");
 
             if (userId != null)
             {
@@ -170,18 +189,12 @@ namespace masterPiece.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public IActionResult CheckLoginAndRedirect()
         {
-            int? userId = HttpContext.Session.GetInt32("userId");
+            int? userId = HttpContext.Session.GetInt32("UserID");
 
             if (userId == null)
-            {
-                TempData["NotRegistered"] = "You are not registered. Please sign up first.";
-                return RedirectToAction("Register", "Users");
-            }
-
-            var user = _context.Users.FirstOrDefault(u => u.ID == userId);
-            if (user == null)
             {
                 return RedirectToAction("Login", "Users");
             }
@@ -191,7 +204,7 @@ namespace masterPiece.Controllers
 
         public IActionResult Checkout()
         {
-            int? userId = HttpContext.Session.GetInt32("userId");
+            int? userId = HttpContext.Session.GetInt32("UserID");
 
             if (userId != null)
             {
@@ -199,19 +212,18 @@ namespace masterPiece.Controllers
                 if (cart != null)
                 {
                     var items = _context.CartDetails
-     .Where(cd => cd.CartID == cart.ID)
-     .Include(cd => cd.Product)
-     .ToList() // ✅ أولاً نحضّر البيانات من قاعدة البيانات
-     .Select(cd => new Dictionary<string, object>
-     {
-         ["ProductId"] = cd.ProductID,
-         ["Name"] = cd.Product?.Name ?? "",
-         ["Price"] = cd.Product?.Price ?? 0,
-         ["Quantity"] = cd.Quantity,
-         ["ImagePath"] = cd.Product?.ImagePath ?? "default.jpg"
-     })
-     .ToList();
-
+                        .Where(cd => cd.CartID == cart.ID)
+                        .Include(cd => cd.Product)
+                        .ToList()
+                        .Select(cd => new Dictionary<string, object>
+                        {
+                            ["ProductId"] = cd.ProductID,
+                            ["Name"] = cd.Product?.Name ?? "",
+                            ["Price"] = cd.Product?.Price ?? 0,
+                            ["Quantity"] = cd.Quantity,
+                            ["ImagePath"] = cd.Product?.ImagePath ?? "default.jpg"
+                        })
+                        .ToList();
 
                     return View(items);
                 }
@@ -235,7 +247,7 @@ namespace masterPiece.Controllers
         [HttpPost]
         public IActionResult PlaceOrder(string FullName, string Address, string PhoneNumber)
         {
-            int? userId = HttpContext.Session.GetInt32("userId");
+            int? userId = HttpContext.Session.GetInt32("UserID");
 
             if (userId == null)
             {

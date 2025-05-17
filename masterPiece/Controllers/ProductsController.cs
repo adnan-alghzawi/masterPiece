@@ -2,6 +2,7 @@
 using masterPiece.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace masterPiece.Controllers
 {
@@ -17,16 +18,8 @@ namespace masterPiece.Controllers
         public IActionResult Index(string status = "all")
         {
             var productsQuery = _context.Products
-                .Select(p => new Product
-                {
-                    UserID = p.ID,
-                    Name = p.Name,
-                    Price = p.Price,
-                    QuantityAvailable = p.QuantityAvailable,
-                    ImagePath = p.ImagePath,
-                    IsActive = p.IsActive,
-                    Category = p.Category
-                });
+                .Include(p => p.Category)
+                .AsQueryable();
 
             if (status == "active")
                 productsQuery = productsQuery.Where(p => p.IsActive == true);
@@ -36,6 +29,7 @@ namespace masterPiece.Controllers
             ViewBag.CurrentStatus = status;
             return View(productsQuery.ToList());
         }
+
 
 
         public async Task<IActionResult> ProductDetails(int id)
@@ -124,8 +118,11 @@ namespace masterPiece.Controllers
             product.IsActive = newStatus;
             _context.SaveChanges();
 
+            TempData["StatusChanged"] = "Product status updated successfully.";
             return RedirectToAction("Index");
         }
+
+
 
         public IActionResult Edit(int id)
         {

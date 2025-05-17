@@ -6,89 +6,137 @@
 
 @section Styles {
     <style>
-        .profile-edit-wrapper {
-            max-width: 500px;
-            margin: 60px auto;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.15);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(76, 175, 80, 0.2);
+        .edit-profile-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
         }
 
-            .profile-edit-wrapper h2 {
-                color: #388e3c;
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 25px;
+        .edit-profile-header {
+            text-align: center;
+            color: #2E7D32;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .edit-profile-card {
+            background: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #424242;
+        }
+
+        .form-input {
+            width: 94%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+            .form-input:focus {
+                outline: none;
+                border-color: #388E3C;
+                box-shadow: 0 0 0 2px rgba(56, 142, 60, 0.2);
             }
 
-        .form-group label {
-            font-weight: 600;
-            color: #2e7d32;
-        }
-
-        .form-control {
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-
         .save-btn {
-            background-color: #4CAF50;
-            color: white;
             width: 100%;
-            padding: 12px;
+            padding: 0.75rem;
+            background-color: #388E3C;
+            color: white;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 0.5rem;
         }
 
             .save-btn:hover {
-                background-color: #388e3c;
+                background-color: #2E7D32;
             }
 
-        .change-password-link {
-            display: block;
-            margin-top: 25px;
+        .password-action {
             text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #EEEEEE;
         }
 
-            .change-password-link a {
-                text-decoration: none;
-                color: #f57c00;
-                font-weight: 600;
+        .password-link {
+            color: #1976D2;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            .password-link:hover {
+                color: #0D47A1;
+                text-decoration: underline;
             }
 
-                .change-password-link a:hover {
-                    color: #e65100;
-                }
+        @@media (max-width: 768px) {
+            .edit-profile-container {
+                padding: 1rem;
+            }
+
+            .edit-profile-header {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 }
 
-<div class="profile-edit-wrapper">
-    <h2>✏️ Edit Your Profile</h2>
+<div class="edit-profile-container">
+    <h1 class="edit-profile-header">Edit Your Profile</h1>
 
-    <form asp-action="EditProfile" method="post">
-        <div class="form-group mb-3">
-            <label>Username   :</label>
-            <input asp-for="Username" class="form-control" required />
-        </div>
-        <div class="form-group mb-3">
-            <label>Email      :</label>
-            <input asp-for="Email" class="form-control" required />
-        </div>
-        <div class="form-group mb-4">
-            <label>Phone Number:</label>
-            <input asp-for="PhoneNumber" class="form-control" required />
-        </div>
+    <div class="edit-profile-card">
+        <form asp-action="EditProfile" method="post">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input asp-for="Username" class="form-input" required />
+            </div>
 
-        <button type="submit" class="save-btn">💾 Save Changes</button>
-    </form>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input asp-for="Email" class="form-input" required type="email" />
+            </div>
 
-    <div class="change-password-link">
-        <a href="/Users/ChangePassword">🔐 Change Password</a>
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-input" required type="tel" />
+            </div>
+
+            <button type="submit" class="save-btn">
+                Save Changes
+            </button>
+        </form>
+
+        <div class="password-action">
+            <a href="/Users/ChangePassword" class="password-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+                </svg>
+                Change Password
+            </a>
+        </div>
     </div>
 </div>

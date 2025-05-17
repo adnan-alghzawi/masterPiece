@@ -6,104 +6,171 @@
 
 @section Styles {
     <style>
-        .orders-wrapper {
-            margin-top: 5%;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.1);
-            border: 1px solid #e0f2f1;
+        .orders-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
 
-            .orders-wrapper h2 {
-                color: #4CAF50;
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 30px;
+        .orders-header {
+            text-align: center;
+            color: #2E7D32;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .orders-card {
+            background: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            overflow-x: auto;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+            .orders-table th {
+                background-color: #2E7D32;
+                color: white;
+                padding: 1rem;
+                text-align: left;
+                font-weight: 500;
             }
 
-        .table-orders th {
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
+            .orders-table td {
+                padding: 1rem;
+                border-bottom: 1px solid #EEEEEE;
+                vertical-align: middle;
+            }
+
+            .orders-table tr:last-child td {
+                border-bottom: none;
+            }
+
+            .orders-table tr:hover {
+                background-color: #F1F8E9;
+            }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
         }
 
-        .table-orders td {
-            text-align: center;
-            vertical-align: middle;
+        .status-pending {
+            background-color: #FFF3E0;
+            color: #E65100;
+        }
+
+        .status-processing {
+            background-color: #E3F2FD;
+            color: #0D47A1;
+        }
+
+        .status-delivered {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .status-cancelled {
+            background-color: #FFEBEE;
+            color: #C62828;
         }
 
         .no-orders {
             text-align: center;
+            padding: 2rem;
+            color: #757575;
             font-size: 1.1rem;
-            margin-top: 30px;
-            color: #888;
         }
 
-        .table-bordered {
-            border-radius: 12px;
-            overflow: hidden;
-            width: 100%;
+        .order-date {
+            white-space: nowrap;
         }
 
-        .table tbody tr:hover {
-            background-color: #f1f8e9;
+        .order-total {
+            font-weight: 600;
+            color: #2E7D32;
+        }
+
+        @@media (max-width: 768px) {
+            .orders-container {
+                padding: 0;
+            }
+
+            .orders-card {
+                padding: 1rem;
+                border-radius: 0;
+            }
+
+            .orders-table th,
+            .orders-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
         }
     </style>
 }
 
-<div class="orders-wrapper">
-    <h2>📦 My Orders</h2>
+<div class="orders-container">
+    <h1 class="orders-header">My Orders</h1>
 
-    @if (!Model.Any())
-    {
-        <p class="no-orders">You have no orders yet.</p>
-    }
-    else
-    {
-        <table class="table table-bordered table-orders">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Total</th>
-                    <th>Address</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var order in Model)
-                {
+    <div class="orders-card">
+        @if (!Model.Any())
+        {
+            <div class="no-orders">You don't have any orders yet.</div>
+        }
+        else
+        {
+            <table class="orders-table">
+                <thead>
                     <tr>
-                        <td>@(order.OrderDate?.ToShortDateString())</td>
-                        <td>
-                            @if (order.Status == "Pending")
-                            {
-                                <span class="badge bg-warning text-dark">Pending</span>
-                            }
-                            else if (order.Status == "Processing")
-                            {
-                                <span class="badge bg-info text-dark">Processing</span>
-                            }
-                            else if (order.Status == "Delivered")
-                            {
-                                <span class="badge bg-success">Delivered</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">@order.Status</span>
-                            }
-                        </td>
-                        <td>@string.Format("${0:0.00}", order.TotalAmount)</td>
-                        <td>@order.DeliveryAddress</td>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th>Address</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td class="order-date">@order.OrderDate?.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (order.Status == "Pending")
+                                {
+                                    <span class="status-badge status-pending">Pending</span>
+                                }
+                                else if (order.Status == "Processing")
+                                {
+                                    <span class="status-badge status-processing">Processing</span>
+                                }
+                                else if (order.Status == "Delivered")
+                                {
+                                    <span class="status-badge status-delivered">Delivered</span>
+                                }
+                                else if (order.Status == "Cancelled")
+                                {
+                                    <span class="status-badge status-cancelled">Cancelled</span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge">@order.Status</span>
+                                }
+                            </td>
+                            <td class="order-total">@string.Format("${0:0.00}", order.TotalAmount)</td>
+                            <td>@order.DeliveryAddress</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
 </div>
-<br />
-<br />
-<br />

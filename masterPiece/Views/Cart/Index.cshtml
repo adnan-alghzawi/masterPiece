@@ -1,39 +1,204 @@
 ﻿@model List<Dictionary<string, object>>
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/cart.css" />
+@{
+    ViewData["Title"] = "Your Cart";
 }
 
-<h2 style="text-align:center; margin-top:5%;">Your Cart</h2>
+@section Styles {
+    <style>
+        .cart-page {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
 
-<div class="cart-container">
-    @foreach (var item in Model)
-    {
-        <div class="cart-item">
-            <img src="@Url.Content("~/images/" + item["ImagePath"])" alt="@item["Name"]" />
-            <div class="cart-item-details">
-                <h3>@item["Name"]</h3>
-                <p>Price: $@item["Price"]</p>
+        .cart-header {
+            text-align: center;
+            color: #2E7D32;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 600;
+        }
 
-                <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" style="display: flex; gap: 10px; align-items: center;">
-                    <input type="hidden" name="productId" value="@item["ProductId"]" />
-                    <input type="number" name="quantity" value="@item["Quantity"]" min="1" style="width: 60px;" />
-                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                </form>
+        .cart-container {
+            background: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
 
-                <p>Total: $@(Convert.ToDecimal(item["Price"]) * Convert.ToInt32(item["Quantity"]))</p>
+        .cart-item {
+            display: flex;
+            gap: 2rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #EEEEEE;
+            align-items: center;
+        }
+
+            .cart-item:last-child {
+                border-bottom: none;
+            }
+
+            .cart-item img {
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+            .cart-item-details h3 {
+                margin: 0 0 0.5rem 0;
+                color: #333;
+                font-size: 1.2rem;
+            }
+
+            .cart-item-details p {
+                margin: 0.5rem 0;
+                color: #666;
+            }
+
+        .quantity-form {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .quantity-input {
+            width: 70px;
+            padding: 0.5rem;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .update-btn {
+            padding: 0.5rem 1rem;
+            background-color: #388E3C;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .update-btn:hover {
+                background-color: #2E7D32;
+            }
+
+        .remove-item {
+            color: #D32F2F;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border: 1px solid #D32F2F;
+            border-radius: 6px;
+        }
+
+            .remove-item:hover {
+                color: #B71C1C;
+                background-color: #FFEBEE;
+            }
+
+        .cart-total {
+            text-align: right;
+            margin: 2rem 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2E7D32;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: #388E3C;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+            .checkout-btn:hover {
+                background-color: #2E7D32;
+            }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: #757575;
+            font-size: 1.2rem;
+        }
+
+        @@media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+                .cart-item img {
+                    width: 100%;
+                    height: auto;
+                    max-height: 200px;
+                }
+
+            .quantity-form {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+}
+
+<div class="cart-page">
+    <h1 class="cart-header">Your Shopping Cart</h1>
+
+    <div class="cart-container">
+        @if (!Model.Any())
+        {
+            <div class="empty-cart">Your cart is empty</div>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <div class="cart-item">
+                    <img src="@Url.Content("~/images/" + item["ImagePath"])" alt="@item["Name"]" />
+                    <div class="cart-item-details">
+                        <h3>@item["Name"]</h3>
+                        <p>Price: $@item["Price"]</p>
+
+                        <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="quantity-form">
+                            <input type="hidden" name="productId" value="@item["ProductId"]" />
+                            <input type="number" name="quantity" value="@item["Quantity"]" min="1" class="quantity-input" />
+                            <button type="submit" class="update-btn">Update</button>
+                        </form>
+
+                        <p>Item Total: $@(Convert.ToDecimal(item["Price"]) * Convert.ToInt32(item["Quantity"]))</p>
+                    </div>
+                    <a href="/Cart/Remove/@item["ProductId"]" class="remove-item">Remove</a>
+                </div>
+            }
+
+            <div class="cart-total">
+                Order Total: $@Model.Sum(i => Convert.ToDecimal(i["Price"]) * Convert.ToInt32(i["Quantity"]))
             </div>
-            <a href="/Cart/Remove/@item["ProductId"]" class="remove-item">Remove</a>
-        </div>
-    }
 
-    <div class="total">
-        Total: $@Model.Sum(i => Convert.ToDecimal(i["Price"]) * Convert.ToInt32(i["Quantity"]))
+            <form asp-action="CheckLoginAndRedirect" method="post">
+                <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+            </form>
+        }
     </div>
-
-    <a href="/Cart/CheckLoginAndRedirect" class="btn btn-success">Proceed to Checkout</a>
-
 </div>
-<br />
-<br />
-<br />
