@@ -26,9 +26,31 @@
 
                     <div class="card-body text-center">
                         <h5 class="card-title text-primary">👨‍🌾 @farmer.Username</h5>
+                        @{
+                            var sessionKey = $"FarmerReserved_{farmer.ID}";
+                            var reservation = Context.Session.GetString(sessionKey);
+                            bool isUnavailable = false;
+
+                            if (!string.IsNullOrEmpty(reservation))
+                            {
+                                var parts = reservation.Split('|');
+                                if (parts.Length == 2 &&
+                                DateTime.TryParse(parts[0], out var startDate) &&
+                                DateTime.TryParse(parts[1], out var endDate))
+                                {
+                                    var now = DateTime.Now;
+                                    isUnavailable = now >= startDate && now <= endDate;
+                                }
+                            }
+                        }
+
                         <p class="mb-2">
                             <strong>Status:</strong>
-                            @if (farmer.IsActive == true)
+                            @if (isUnavailable)
+                            {
+                                <span class="badge bg-warning text-dark">Unavailable</span>
+                            }
+                            else if (farmer.IsActive == true)
                             {
                                 <span class="badge bg-success">Active</span>
                             }
@@ -41,13 +63,10 @@
                                 <span class="badge bg-secondary">Unknown</span>
                             }
                         </p>
-                        @* <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#@modalId"> *@
-                        @*     View Profile *@
-                        @* </button> *@
-                        <a href="/Users/FarmerProfile/@farmer.ID" class="btn btn-outline-success">
-                            View Profile
-                        </a>
 
+                        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#@modalId">
+                            View Profile
+                        </button>
                     </div>
                 </div>
             </div>
@@ -72,10 +91,24 @@
                             <p><strong>📱 Phone:</strong> @(string.IsNullOrEmpty(farmer.PhoneNumber) ? "Not Provided" : farmer.PhoneNumber)</p>
                             <p><strong>🧩 User Type:</strong> @farmer.UserType</p>
                             <p><strong>✅ Status:</strong> @(farmer.IsActive == true ? "Active" : farmer.IsActive == false ? "Inactive" : "Unknown")</p>
+
+                            <form method="post" asp-action="ReserveFarmer" asp-controller="Users">
+                                <input type="hidden" name="farmerId" value="@farmer.ID" />
+                                <div class="mb-2">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="date" name="startDate" class="form-control" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">End Date</label>
+                                    <input type="date" name="endDate" class="form-control" required />
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary w-100">📅 Reserve</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+
 
             index++;
         }

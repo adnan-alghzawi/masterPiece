@@ -10,35 +10,23 @@
     </div>
 
     <ul class="menu">
-
         <li><a href="/Home/Index">Home</a></li>
-        
         <li><a asp-controller="Home" asp-action="About">About Us</a></li>
         <li><a asp-controller="Home" asp-action="Contact">Contact us</a></li>
-
         <li><a href="/Category">Shop</a></li>
-        @* <li><a href="/Category">category</a></li> *@
-
-        @* <li><a asp-controller="Subscription" asp-action="Index">Subscriptions</a></li> *@
-
         <li><a asp-controller="Users" asp-action="Farmers">Farmers</a></li>
-
         <li><a asp-controller="Home" asp-action="Map">Map</a></li>
-        
 
-        @if (Context.Session.GetInt32("userId") != null)
+        @if (Context.Session.GetInt32("UserID") != null)
         {
             <li><a href="/Users/Profile">Profile</a></li>
             <li><a href="/Users/Logout" class="login">Logout</a></li>
         }
-       
         else
         {
             <li><a href="/Users/Login" class="login">Login</a></li>
         }
 
         @await Component.InvokeAsync("CartItemCount")
-
     </ul>
-
 </div>

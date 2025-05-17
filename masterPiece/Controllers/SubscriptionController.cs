@@ -22,7 +22,7 @@ namespace masterPiece.Controllers
         public IActionResult Subscribe(string planName)
         {
             // ✅ تحقق من تسجيل الدخول
-            var userId = HttpContext.Session.GetInt32("userId");
+            var userId = HttpContext.Session.GetInt32("UserID");
             if (userId == null)
                 return RedirectToAction("Login", "Users");
 
@@ -58,9 +58,9 @@ namespace masterPiece.Controllers
             _context.Subscriptions.Add(subscription);
             _context.SaveChanges();
 
-            // ✅ هنا تقدر تضيف أي ميزات إضافية للمستخدم
             TempData["Success"] = "Subscription successful! Your benefits have been activated.";
             return RedirectToAction("Index");
         }
+
     }
 }
